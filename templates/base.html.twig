@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>
+        {% block title %}Snow Tricks 🏂{% endblock %}
+        </title>
+        
+        {% block stylesheets %}
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        {% endblock %}
+
+        {% block javascripts %}
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js"></script>
+        {% endblock %}
+    </head>
+    <body>
+            {% block header %}
+                {% include "partials/_header.html.twig" %}
+            {% endblock %}
+            {% block body %}{% endblock %}
+            {% block footer %}
+                {% include "partials/_footer.html.twig" %}
+            {% endblock %}
+    </body>
+</html>
+
