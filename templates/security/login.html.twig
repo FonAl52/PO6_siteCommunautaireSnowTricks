@@ -17,7 +17,13 @@
 				                {{ message }}
 			                </div>
 		                {% endfor %}
+                        
                         <!-- Submit error message -->
+                        {% for message in app.flashes('warning') %}
+                            <div class="alert alert-warning mt-4">
+                                {{ message }}
+                            </div>
+		                {% endfor %}
                         {% if error %}
                             <div class="alert alert-danger mt-4">
                                 {{ error.messageKey|trans(error.messageData, 'security') }}
@@ -38,6 +44,9 @@
                                     <div class="form-floating mb-3">
                                         <input type="password" class="form-control" id="password" name="_password" placeholder="********" data-sb-validations="required,password">
                                         <label for="password">Mot de passe</label>
+                                        <div class="row gx-5 mt-4 justify-content-center">
+                                            <a href="{{ path('forget.password') }}">Mot de passe oublié ?</a>
+                                        </div>
                                     </div>
                                     <!-- Submit button -->
                                     <div class="d-grid"><button type="submit" class="btn btn-primary btn-lg">

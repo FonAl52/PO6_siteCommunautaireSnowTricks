@@ -41,6 +41,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank()]
     private array $roles = [];
 
+    #[ORM\Column(length: 255)]
+    private ?string $resetToken;
+
     /**
      * @var string The hashed password
      */
@@ -55,9 +58,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull()]
     private \DateTimeImmutable $createdAt;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private \DateTimeImmutable $updatedAt;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
 
@@ -131,6 +138,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getResetToken(): ?string
+    {   
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+        
+        return $this;
+    }
+
     /**
      * Get the value of plainPassword
      */
@@ -186,4 +205,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
 }
