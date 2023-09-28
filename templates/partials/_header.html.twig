@@ -14,7 +14,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ app.user.firstName }} {{ app.user.lastName }}</a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                                <li><a class="dropdown-item" href="blog-home.html">Mon profile</a></li>
+                                <li><a class="dropdown-item" href="{{ path('user.edit', {id : app.user.id}) }}">Mon profile</a></li>
                                 <li><a class="dropdown-item" href="blog-post.html">Mes figures</a></li>
                                 <li><a class="dropdown-item" href="{{ path('security.logout') }}">Déconnexion</a></li>
                             </ul>
