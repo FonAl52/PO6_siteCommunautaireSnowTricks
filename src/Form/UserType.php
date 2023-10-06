@@ -9,7 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-
+use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class UserType extends AbstractType
@@ -20,8 +21,8 @@ class UserType extends AbstractType
             ->add('last_name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '50',
+                    'minlength' => '2',
+                    'maxlength' => '50',
                 ],
                 'label' => 'Nom',
                 'label_attr' => [
@@ -35,8 +36,8 @@ class UserType extends AbstractType
             ->add('first_name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
-                    'maxlenght' => '50',
+                    'minlength' => '2',
+                    'maxlength' => '50',
                 ],
                 'label' => 'Prénom',
                 'label_attr' => [
@@ -46,6 +47,20 @@ class UserType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(['min' => 2, 'max' => 50])
                 ]
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Image de profil',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'required' => false,
+                'mapped' => true,
+                'constraints' => [
+                    new Assert\File([
+                        'maxSize' => '2M',
+                        'maxSizeMessage' => 'L\'image est trop volumineuse. La taille maximale autorisée est de 2 Mo.', // Message en cas de dépassement de la taille maximale
+                    ]),
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'attr' => [
