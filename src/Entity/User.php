@@ -44,6 +44,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank()]
     private array $roles = [];
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken;
+
     /**
      * @var string The hashed password
      */
@@ -58,18 +61,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull()]
     private \DateTimeImmutable $createdAt;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
-
     #[Vich\UploadableField(mapping: 'user_images', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
     private ?string $imageName = null;
 
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private \DateTimeImmutable $updatedAt;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+        // $this->resetToken = 1;
     }
 
     public function __sleep()
@@ -157,6 +162,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getResetToken(): ?string
+    {   
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): self
+    {
+        $this->resetToken = $resetToken;
+        
+        return $this;
+    }
+
     /**
      * Get the value of plainPassword
      */
@@ -213,6 +230,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
@@ -247,4 +265,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->imageName;
     }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
 }
