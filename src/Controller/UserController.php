@@ -51,6 +51,7 @@ class UserController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 if ($hasher->isPasswordValid($choosenUser, $form->getData()->getPlainPassword())) {
                     $user = $form->getData();
+                    
                     $manager->persist($user);
                     $manager->flush();
 
@@ -68,6 +69,7 @@ class UserController extends AbstractController
 
             return $this->render('user/edit.html.twig', [
                 'form' => $form->createView(),
+                'choosenUser' => $choosenUser
             ]);
         }
         return $this->redirectToRoute('home.index');
@@ -171,7 +173,8 @@ class UserController extends AbstractController
         Request $request,
         UserRepository $userRepository,
         EntityManagerInterface $manager,
-        UserPasswordHasherInterface $hasher
+        UserPasswordHasherInterface $hasher,
+        Security $security
     ): Response {
         $user = $userRepository->findOneByResetToken($token);
 
