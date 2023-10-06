@@ -1,38 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}🏂 Snow Tricks - Mon Compte
-{% endblock %}
+{% block title %}🏂 Snow Tricks - Mon Compte{% endblock %}
 
 {% block body %}
 <section class="py-5 mt-4">
-                <div class="container px-5">
-                    <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5 h-100">
-                        <div class="text-center mb-5 mt-4">
-                            <h1 class="fw-bolder">Mon compte</h1>
+    <div class="container px-5">
+        <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5 h-100">
+            <div class="text-center mb-5 mt-4">
+                <h1 class="fw-bolder">Mon compte</h1>
+            </div>
+
+            <!-- Submit success message -->
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
+            <!-- Submit error message -->
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-8 col-xl-6 mt-4">
+                    <!-- Snow Tricks User Account Form -->
+                    <form method="post" action="{{ path('user.edit', {'id': choosenUser.id}) }}">
+                        <!-- Last Name input -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.last_name, { 'attr': { 'class': 'form-control' } }) }}
+                            {{ form_label(form.last_name, 'Nom', { 'label_attr': { 'class': 'form-label' } }) }}
                         </div>
 
-                        <!-- Submit success message -->
-                        {% for message in app.flashes('success') %}
-			                <div class="alert alert-success mt-4">
-				                {{ message }}
-			                </div>
-		                {% endfor %}
-                        <!-- Submit error message -->
-                        {% for message in app.flashes('warning') %}
-                            <div class="alert alert-warning mt-4">
-                                {{ message }}
-                            </div>
-		                {% endfor %}
-                        
-                        <div class="row gx-5 justify-content-center">
-                            <div class="col-lg-8 col-xl-6 mt-4">
-                                <!-- Snow Tricks Registration Form -->
-                                <div class="form-floating mb-3">
-                                    {{ form(form) }}
-                                </div>
-                            </div>
+                        <!-- First Name input -->
+                        <div class="form-floating mb-3">
+                            {{ form_widget(form.first_name, { 'attr': { 'class': 'form-control' } }) }}
+                            {{ form_label(form.first_name, 'Prénom', { 'label_attr': { 'class': 'form-label' } }) }}
                         </div>
-                    </div>
+
+                        <!-- Profile Image input -->
+                        <div class="mb-3">
+                            {{ form_label(form.imageFile, 'Image de profil', { 'label_attr': { 'class': 'form-label' } }) }}
+                            {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control' } }) }}
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-floating mb-3">       
+                            {{ form_widget(form.plainPassword, { 'attr': { 'class': 'form-control' } }) }}
+                            {{ form_label(form.plainPassword, 'Mot de passe', { 'label_attr': { 'class': 'form-label' } }) }}
+                        </div>
+
+                        <!-- Submit button -->
+                        <div class="d-grid">
+                            {{ form_widget(form.submit, { 'attr': { 'class': 'btn btn-primary btn-lg' } }) }}
+                        </div>
+                    </form>
                 </div>
-            </section>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
