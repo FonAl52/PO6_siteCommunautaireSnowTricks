@@ -27,36 +27,7 @@
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-8 col-xl-6 mt-4">
                     <!-- Snow Tricks User Account Form -->
-                    <form method="post" action="{{ path('user.edit', {'id': choosenUser.id}) }}">
-                        <!-- Last Name input -->
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.last_name, { 'attr': { 'class': 'form-control' } }) }}
-                            {{ form_label(form.last_name, 'Nom', { 'label_attr': { 'class': 'form-label' } }) }}
-                        </div>
-
-                        <!-- First Name input -->
-                        <div class="form-floating mb-3">
-                            {{ form_widget(form.first_name, { 'attr': { 'class': 'form-control' } }) }}
-                            {{ form_label(form.first_name, 'Prénom', { 'label_attr': { 'class': 'form-label' } }) }}
-                        </div>
-
-                        <!-- Profile Image input -->
-                        <div class="mb-3">
-                            {{ form_label(form.imageFile, 'Image de profil', { 'label_attr': { 'class': 'form-label' } }) }}
-                            {{ form_widget(form.imageFile, { 'attr': { 'class': 'form-control' } }) }}
-                        </div>
-
-                        <!-- Password input -->
-                        <div class="form-floating mb-3">       
-                            {{ form_widget(form.plainPassword, { 'attr': { 'class': 'form-control' } }) }}
-                            {{ form_label(form.plainPassword, 'Mot de passe', { 'label_attr': { 'class': 'form-label' } }) }}
-                        </div>
-
-                        <!-- Submit button -->
-                        <div class="d-grid">
-                            {{ form_widget(form.submit, { 'attr': { 'class': 'btn btn-primary btn-lg' } }) }}
-                        </div>
-                    </form>
+                    {{ form(form) }}
                 </div>
             </div>
         </div>
