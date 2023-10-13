@@ -3,11 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\TricksRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+
+#[UniqueEntity('title')]
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: TricksRepository::class)]
 class Tricks
 {
@@ -17,13 +24,16 @@ class Tricks
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $title = null;
+    #[Assert\NotBlank()]
+    #[Assert\Length(min: 2, max: 50)]
+    private ?string $title;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $description = null;
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank()]
+    private ?string $description;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -35,7 +45,7 @@ class Tricks
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksImage::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksImage::class, orphanRemoval: true, fetch: 'EAGER')]
     private Collection $tricksImage;
 
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksVideo::class, orphanRemoval: true)]
@@ -46,9 +56,18 @@ class Tricks
 
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+
         $this->tricksImage = new ArrayCollection();
         $this->tricksVideo = new ArrayCollection();
         $this->id_group = new ArrayCollection();
+    }
+
+    #[ORM\PrePersist()]
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
