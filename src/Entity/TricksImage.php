@@ -16,9 +16,6 @@ class TricksImage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $name = null;
-
     #[ORM\ManyToOne(inversedBy: 'tricksImage')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Tricks $tricks = null;

@@ -5,7 +5,7 @@
 
 {% block body %}
             <!-- Hero -->
-            <section class="section-with-background">
+            <section id="top_home" class="section-with-background">
                 <div class="container-fluid p-0">
                     <div class="position-relative">
                         <!-- Titre superposé -->
@@ -19,20 +19,28 @@
             <!-- Blog preview section-->
             <section id="tricks" class="mx-auto px-5 bg-dark py-5">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5">
-                    {% for i in 1..15 %}
+                    {% for trick in tricks %}
                         <div class="col mb-5">
                             <div class="card h-60 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="..." />
+                                {% if trick.tricksImage|length > 0 %}
+                                    {% for image in trick.tricksImage %}
+                                        <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ trick.title }}" class="image-600x350"/>
+                                    {% endfor %}
+                                {% else %}
+                                    <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ trick.title }}" class="image-600x350"/>
+                                {% endif %}
                                 <div class="card-body p-4">
                                     <!-- Titre de la carte -->
                                     <div class="d-flex justify-content-between align-items-top">
                                         <div class="figure-card-title">
-                                            <a class="text-decoration-none link-dark" href="{{ path('detailed.tricks') }}"><h5 class="card-title mb-3">Post title</h5></a>
+                                            <a class="text-decoration-none link-dark" href="{{ path('detailed.tricks', {slug: trick.slug}) }}"><h5 class="card-title mb-3">{{ trick.title }}</h5></a>
                                         </div>
                                         <!-- Boutons avec icônes (stylo et poubelle) -->
                                         <div class="d-flex justify-content-end align-items-center">
-                                            <a class="btn btn-link" href="{{ path('edit.tricks')  }}"><i class="bi bi-pencil-fill me-2"></i></a><!-- Bouton de stylo -->
-                                            <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
+                                            {% if currentUser is not null and currentUser == trick.user %}
+                                                <a class="btn btn-link" href="{{ path('edit.tricks', {slug: trick.slug}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
+                                                 <a class="btn btn-link" href="{{ path('delete.tricks', {slug: trick.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -44,6 +52,11 @@
                     <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-center">
                                 <a class="btn btn-secondary btn-lg px-4 me-sm-3" href="#features">Voir plus</a>
                     </div>
+                </div>
+            </section>
+            <section id="top_home" class="section">
+                <div class="arrow-button_up position-relative m-3">
+                    <a class="btn btn-link" href="#top_home"><i class="bi bi-arrow-up-circle-fill"></i></a><!-- Bouton de fléche -->
                 </div>
             </section>
         </main>

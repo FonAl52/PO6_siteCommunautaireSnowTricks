@@ -17,7 +17,7 @@ class TricksImageType extends AbstractType
     {
         $builder
             ->add('imageFile', VichImageType::class, [
-                'label' => 'Image de profil',
+                'label' => 'Image',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -26,7 +26,7 @@ class TricksImageType extends AbstractType
                 'constraints' => [
                     new Assert\File([
                         'maxSize' => '2M',
-                        'maxSizeMessage' => 'L\'image est trop volumineuse. La taille maximale autorisée est de 2 Mo.', // Message en cas de dépassement de la taille maximale
+                        'maxSizeMessage' => 'L\'image est trop volumineuse. La taille maximale autorisée est de 2 Mo.',
                     ]),
                 ],
             ]);

@@ -9,22 +9,26 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Tricks;
 
-class DetailedTricksController extends AbstractController
+class DeleteTricksController extends AbstractController
 {
-    #[Route('/detail/tricks', name: 'detailed.tricks')]
-    public function display(
+    #[Route('/delete/tricks', name: 'delete.tricks')]
+    public function deleteTrick(
         Request $request,
         EntityManagerInterface $entityManager
         ): Response {
         $slug = $request->query->get('slug');
         $tricks = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
         $currentUser = $this->getUser();
-        
-        return $this->render('tricks/detailedTricks.html.twig', [
-            'controller_name' => 'DetailedTricksController',
-            'currentUser' => $currentUser,
-            'tricks' => $tricks,
-        ]);
-    }    
+        $tricksCreator = $tricks->getUser();
 
+        if ($tricksCreator !== $currentUser) {
+            throw new AccessDeniedException("Vous n'avez pas l'autorisation de supprimer ce trick.");
+        }
+
+        $entityManager->remove($tricks);
+        $entityManager->flush();
+
+        
+        return $this->redirectToRoute('home.index');
+    }
 }

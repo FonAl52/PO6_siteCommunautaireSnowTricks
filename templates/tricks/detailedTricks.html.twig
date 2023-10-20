@@ -9,14 +9,19 @@
                     <div class="position-relative">
                         <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
                         <div class="position-absolute top-0 end-0 m-3">
-                            <a class="btn btn-link" href="{{ path('edit.tricks')  }}"><i class="bi bi-pencil-fill me-2"></i></a><!-- Bouton de stylo -->
-                            <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
+                            {% if currentUser is not null and currentUser == tricks.user %}
+                                <a class="btn btn-link" href="{{ path('edit.tricks', {slug: tricks.slug}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
+                                <a class="btn btn-link" href="{{ path('delete.tricks', {slug: tricks.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                            {% endif %}
                         </div>
-
-                        <img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="Background Image" style="width: 100%; height: auto;" />
-
+                            {% if tricks.tricksImage|length > 0 %}
+                                {% for image in tricks.tricksImage %}
+                                    <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>                                        {% endfor %}
+                                {% else %}
+                                    <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ tricks.title }}" class="tricks_hero_image"/>
+                                {% endif %}
                         <!-- Titre superposé -->
-                        <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">Welcome to Blog Post!</h1>
+                        <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">{{ tricks.title }}</h1>
                     </div>
                 </div>
             </section>
@@ -27,28 +32,29 @@
                             <article>
                                 <section class="mb-5 d-flex justify-content-between align-items-center">
                                     <div class="card h-60 shadow border-0">
-                                        <img class="card-img-top" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="..." />
+                                        {% if tricks.tricksImage|length > 0 %}
+                                            {% for image in tricks.tricksImage %}
+                                                <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
+                                            {% endfor %}
+                                        {% else %}
+                                            <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
+                                        {% endif %}
                                     </div>
                                 </section>
                                 <!-- Post content-->
                                 <section class="mb-5">
-                                    <p class="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.</p>
-                                    <p class="fs-5 mb-4">The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.</p>
-                                    <p class="fs-5 mb-4">If you get asteroids about a kilometer in size, those are large enough and carry enough energy into our system to disrupt transportation, communication, the food chains, and that can be a really bad day on Earth.</p>
-                                    <h2 class="fw-bolder mb-4 mt-5">I have odd cosmic thoughts every day</h2>
-                                    <p class="fs-5 mb-4">For me, the most fascinating interface is Twitter. I have odd cosmic thoughts every day and I realized I could hold them to myself or share them with people who might be interested.</p>
-                                    <p class="fs-5 mb-4">Venus has a runaway greenhouse effect. I kind of want to know what happened there because we're twirling knobs here on Earth without knowing the consequences of it. Mars once had running water. It's bone dry today. Something bad happened there as well.</p>
+                                    <p class="fs-5 mb-4">{{ tricks.description }}</p>
                                 </section>
                                 <section class="mb-5">
                                     <div class="container mt-4">
                                         <div class="row">
                                             <div class="col-12">
-                                                    
                                                 <!-- Post meta content -->
-                                                <div class="text-muted fst-italic mb-2">January 1, 2023</div>
+                                                <div class="text-muted fst-italic mb-2">Mis en ligne le {{ tricks.createdAt|date('d/m/Y') }}</div>
                                                 <!-- Post categories -->
-                                                <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                                                <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                                                {% for group in tricks.idGroup %}
+                                                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ group.getName() }}</a>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
