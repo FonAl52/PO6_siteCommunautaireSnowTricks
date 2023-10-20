@@ -89,7 +89,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             'first_name',
             'email',
             'roles',
-            'plainPassword', 
             'password',
             'createdAt',
             'updatedAt'

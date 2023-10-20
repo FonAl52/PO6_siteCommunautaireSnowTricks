@@ -5,7 +5,7 @@
 {% block title %}🏂 Snow Tricks - Création de Tricks{% endblock %}
 
 {% block body %}
-<section class="py-5 mt-4" style="height: 80vh;">
+<section class="py-5 mt-4" style="min-height: 80vh;">
     <div class="container px-5 h-100">
         <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5 h-100">
             <div class="text-center mb-5 mt-4">
@@ -23,11 +23,24 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            
-          
-            {{ form_widget(form.tricksImage) }}
-          
+            <form method="post" action="{{ path('create.tricks') }}" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="">{{ form_label(form.title) }}</label>
+                    {{ form_widget(form.title) }}
+                </div>
+                <div class="form-group">
+                    <label for="">{{ form_label(form.description) }}</label>
+                    {{ form_widget(form.description) }}
+                </div>
+                <div id="imageFields">
+                    <div class="form-group">
+                        <label for="">{{ form_label(form.tricksImage) }}</label>
+                        <input type="file" class="form-control-file" name="tricks[tricksImage][]" id="tricksImage">
+                    </div>
+                </div>
 
+            {{ form(form) }}
+            </form>
         </div>
     </div>
 </section>

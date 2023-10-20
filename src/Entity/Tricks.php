@@ -45,7 +45,7 @@ class Tricks
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksImage::class, orphanRemoval: true, fetch: 'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksImage::class, orphanRemoval: true, fetch: 'EAGER', cascade: ["persist", "remove"])]
     private Collection $tricksImage;
 
     #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksVideo::class, orphanRemoval: true)]

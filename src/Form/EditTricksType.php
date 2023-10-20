@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Tricks;
 use App\Entity\Group;
-use App\Entity\TricksImage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,11 +16,9 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
-
-
-class TricksType extends AbstractType
+class EditTricksType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, [
@@ -38,23 +35,9 @@ class TricksType extends AbstractType
                 ],
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('tricksImage', CollectionType::class, [
-                'entry_type' => TricksImageType::class,
-                'entry_options' => ['label' => false],
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-                'required' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'mapped' => false,
-                'attr' => [
-                    'multiple' => true,
-                ],
-            ])
             ->add('id_group', EntityType::class, [
                 'class' => Group::class,
+                'label' => 'Group',
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => false,
@@ -71,11 +54,10 @@ class TricksType extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Tricks::class,
         ]);
     }
 }
-

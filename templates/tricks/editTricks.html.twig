@@ -4,146 +4,59 @@
 {% endblock %}
 
 {% block body %}
-            <section>
-                <div class="container-fluid p-0">
-                    <div class="position-relative">
-                        <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                        <div class="position-absolute top-0 end-0 m-3">
-                            <div class="edit">
-                                <a class="btn btn-link edit-button" href="#"><i class="bi bi-pencil-fill me-2"></i></a>
-                                 <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
-                                <p class="fs-5 mb-4 static-content"></p>
-                                <input type="text" class="editable-content form-control mb-3" style="display: none;">
-                                <button class="btn btn-primary save-button" style="display: none;">Sauvegarder</button>
+        <section>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div class="container-fluid p-0">
+                <div class="position-relative">
+                    <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                    <div class="position-absolute top-0 end-0 m-3">
+                        {% if currentUser is not null and currentUser == tricks.user %}
+                            <a class="btn btn-link" href="{{ path('edit.tricks', {slug: tricks.slug}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
+                            <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a>
+                        {% endif %}
+                    </div>
+                    {% if tricks.tricksImage|length > 0 %}
+                        {% for image in tricks.tricksImage %}
+                            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>
+                        {% endfor %}
+                    {% else %}
+                        <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ tricks.title }}"/>
+                    {% endif %}
+                    <!-- Titre superposé -->
+                    <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">{{ tricks.title }}</h1>
+                </div>
+            </div>
+        </section>
+        <section class="py-5">
+            <div class="container px-5 my-5">
+                <div class="row gx-5">
+                    <!-- Form content -->
+                    <article>
+                        <section class="mb-5 d-flex justify-content-between align-items-center">
+                            <div class="card w-100 h-60 shadow border-0 p-5">
+                                {{ form_start(form) }}
+                                <div class="form-group">
+                                    {{ form_row(form.title) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_row(form.description) }}
+                                </div>
+                                {{ form_end(form) }}
                             </div>
-                        </div>
-
-                        <img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="Background Image" style="width: 100%; height: auto;" />
-
-                        <!-- Titre superposé -->
-                        <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">Welcome to Blog Post!</h1>
-                    </div>
+                        </section>
+                    </article>
                 </div>
-            </section>
-            <section class="py-5">
-                <div class="container px-5 my-5">
-                    <div class="row gx-5">
-                            <!-- Post content-->
-                            <article>
-                                <section class="mb-5 d-flex justify-content-between align-items-center">
-                                    <div class="card h-60 shadow border-0">
-                                    <img class="card-img-top" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="..." />
-                                    <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                                    <div class="position-absolute top-0 end-0 m-3">
-                                        <div class="edit">
-                                            <a class="btn btn-link edit-button" href="#"><i class="bi bi-pencil-fill me-2"></i></a>
-                                            <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
-                                            <p class="fs-5 mb-4 static-content"></p>
-                                            <input type="text" class="editable-content form-control mb-3" style="display: none;">
-                                            <button class="btn btn-primary save-button" style="display: none;">Sauvegarder</button>
-                                        </div>       
-                                    </div>
-                                    </div>
-                                </section>
-                                <!-- Post content-->
-                                <section class="mb-5">
-                                    <section class="mb-5">
-                                        <div class="position-relative top-0 end-0 m-3">
-                                            <div class="edit">
-                                                <a class="btn btn-link edit-button" href="#"><i class="bi bi-pencil-fill me-2"></i></a>
-                                                 <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
-                                                <p class="fs-5 mb-4 static-content">
-                                                    Science is an enterprise that should be cherished as an activity of the free human mind. Because it transforms who we are, how we live, and it gives us an understanding of our place in the universe.<br>
-                                                    The universe is large and old, and the ingredients for life as we know it are everywhere, so there's no reason to think that Earth would be unique in that regard. Whether of not the life became intelligent is a different question, and we'll see if we find that.<br>
-                                                    If you get asteroids about a kilometer in size, those are large enough and carry enough energy into our system to disrupt transportation, communication, the food chains, and that can be a really bad day on Earth.<br>
-                                                </p>
-                                                <input type="text" class="editable-content form-control mb-3" style="display: none;">
-                                                <button class="btn btn-primary save-button" style="display: none;">Sauvegarder</button>
-                                            </div>
-                                        </div>          
-                                    </section>
-                                    <section class="mb-5">
-                                         <div class="position-relative top-0 end-0 m-3">
-                                           <div class="edit">                                    
-                                                <a class="btn btn-link edit-button" href="#"><i class="bi bi-pencil-fill me-2"></i></a>
-                                                <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
-                                                <h2 class="fs-5 mb-4 static-content fw-bolder mb-4 mt-5">fw-bolder mb-4 mt-5I have odd cosmic thoughts every day</h2>
-                                                <input type="text" class="editable-content form-control mb-3" style="display: none;">
-                                                <button class="btn btn-primary save-button" style="display: none;">Sauvegarder</button>
-                                            </div>              
-                                        </div>
-                                    </section>
-                                    <section class="mb-5">
-                                        <div class="position-relative top-0 end-0 m-3">
-                                            <div class="edit">
-                                                <a class="btn btn-link edit-button" href="#"><i class="bi bi-pencil-fill me-2"></i></a>
-                                                <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
-                                                <p class="fs-5 mb-4 static-content">
-                                                    For me, the most fascinating interface is Twitter. I have odd cosmic thoughts every day and I realized I could hold them to myself or share them with people who might be interested.<br>
-                                                    Venus has a runaway greenhouse effect. I kind of want to know what happened there because we're twirling knobs here on Earth without knowing the consequences of it. Mars once had running water. It's bone dry today. Something bad happened there as well.
-                                                </p>
-                                                <input type="text" class="editable-content form-control mb-3" style="display: none;">
-                                                <button class="btn btn-primary save-button" style="display: none;">Sauvegarder</button>
-                                            </div>
-                                        </div>
-                                    </section>
-                                </section>       
-                                <section class="mb-5">
-                                    <div class="container mt-4">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                    
-                                                <!-- Post meta content -->
-                                                <div class="text-muted fst-italic mb-2">January 1, 2023</div>
-                                                <!-- Post categories -->
-                                                <div class="edit">
-                                                    <a class="btn btn-link edit-button" href="#"><i class="bi bi-pencil-fill me-2"></i></a>
-                                                    <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a><!-- Bouton de poubelle -->
-                                                    <p class="fs-5 mb-4 static-content">
-                                                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                                                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                                                    </p>
-                                                    <input type="text" class="editable-content form-control mb-3" style="display: none;">
-                                                    <button class="btn btn-primary save-button" style="display: none;">Sauvegarder</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                            </article>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- JavaScript pour gérer l'édition -->
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const editContainers = document.querySelectorAll(".edit");
-        
-        editContainers.forEach((editContainer) => {
-            const editButton = editContainer.querySelector(".edit-button");
-            const staticContent = editContainer.querySelector(".static-content");
-            const editableContent = editContainer.querySelector(".editable-content");
-            const saveButton = editContainer.querySelector(".save-button");
-
-            editButton.addEventListener("click", () => {
-                // Masquer le contenu statique et afficher le champ éditable et le bouton "Sauvegarder"
-                staticContent.style.display = "none";
-                editableContent.style.display = "block";
-                saveButton.style.display = "block";
-            });
-
-            saveButton.addEventListener("click", () => {
-                // Récupérer le contenu édité et mettre à jour le contenu statique
-                const newContent = editableContent.value;
-                staticContent.textContent = newContent;
-
-                // Masquer le contenu éditable et le bouton "Sauvegarder" et afficher le contenu statique
-                staticContent.style.display = "block";
-                editableContent.style.display = "none";
-                saveButton.style.display = "none";
-            });
-        });
-    });
-</script>
+            </div>
+        </section>
 {% endblock %}
+
