@@ -79,6 +79,13 @@
     overflow: hidden;
 }
 
+.profile-picture{
+    width: 6vw;
+    height: 6vh;
+    object-fit: cover;
+    overflow: hidden;
+}
+
 @media (max-width: 767px) {
     .section-background {
         height: 100vh;

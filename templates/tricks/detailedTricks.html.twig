@@ -5,6 +5,17 @@
 
 {% block body %}
             <section>
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success mt-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% for message in app.flashes('warning') %}
+                    <div class="alert alert-warning mt-4">
+                        {{ message }}
+                    </div>
+                {% endfor %}
                 <div class="container-fluid p-0">
                     <div class="position-relative">
                         <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
@@ -65,12 +76,23 @@
                                 <div class="card bg-light">
                                     <div class="card-body">
                                         <!-- Comment form-->
-                                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                                        {% if app.user %}
+                                        <div class="m-4">
+                                        {{ form(form) }}
+                                        </div>
+                                        {% else %}
+                                        <div class="m-4">
+                                            <div class="fw-bold">Pour laisser un commentaire vous devez être connecter</div>
+                                            <a class="btn btn-primary btn-lg px-4 me-sm-3 mt-4" href="{{ path('security.login') }}">Connexion</a>
+                                            <a class="btn btn-secondary btn-lg px-4 me-sm-3 mt-4" href="{{ path('security.registration') }}">Inscription</a>
+                                        </div>
+                                        {% endif %}
                                         <!-- Single comment-->
                                         {% for comments in tricks.comments %}
-                                            <div class="d-flex">
-                                                {% if comments.author.imageFile %}
-                                                <div class="flex-shrink-0"><img class="rounded-circle" src="{{ comments.author.user_images }}" alt="{{ comments.author }}'s image profile" /></div>
+                                            <div class="d-flex m-4">
+                                                {% if comments.author.imageName %}
+                                                <div class="flex-shrink-0"><img class="rounded-circle profile-picture" src="../images/userImages/{{ comments.author.imageName }}" alt="{{ comments.author }}'s image profile" /></div>
+
                                                 {% else %}
                                                 <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                                                 {% endif %}
