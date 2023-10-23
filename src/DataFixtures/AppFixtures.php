@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Group;
 use App\Entity\TricksImage;
 use App\Entity\Tricks;
+use App\Entity\Comments;
 use Faker\Generator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -109,6 +110,19 @@ class AppFixtures extends Fixture
             }
 
             $manager->persist($tricks);
+        }
+
+        // Comments
+        $comments = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $comments = new Comments();
+            $comments->setContent($this->faker->realText())
+                ->setIsApproved( isApproved: mt_rand(0,3) === 0 ? false : true)
+                ->setAuthor($users[mt_rand(0, count($users) - 1)])
+                ->setTricks($tricks);
+
+            $manager->persist($comments);
         }
 
         $manager->flush();
