@@ -51,7 +51,7 @@ class UserController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 if ($hasher->isPasswordValid($choosenUser, $form->getData()->getPlainPassword())) {
                     $user = $form->getData();
-                    
+
                     $manager->persist($user);
                     $manager->flush();
 

@@ -33,37 +33,29 @@ class CreateTricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérez le titre depuis le formulaire
             $title = $tricks->getTitle();
 
-            // Utilisez Slugify pour générer le slug
             $slugify = new Slugify();
             $slug = $slugify->slugify($title);
 
-            // Définissez le slug sur l'entité Tricks
             $tricks->setSlug($slug);
 
-            // Récupérez les fichiers téléchargés
             $tricksImagesData = $request->files->get('tricks')['tricksImage'];
 
-            // Parcourez les fichiers et traitez-les
             foreach ($tricksImagesData as $imageData) {
                 $file = $imageData['imageFile']['file'];
 
-                // Utilisez VichUploader pour gérer le téléchargement et l'enregistrement du fichier
                 $tricksImage = new TricksImage();
                 $tricksImage->setImageFile($file);
 
                 $tricks->addTricksImage($tricksImage);
             }
 
-            // Assurez-vous d'attribuer l'utilisateur actuellement connecté
             $user = $this->getUser();
             if ($user) {
                 $tricks->setUser($user);
             }
 
-            // Enregistrez les données dans la base de données
             $manager->persist($tricks);
             $manager->flush();
 

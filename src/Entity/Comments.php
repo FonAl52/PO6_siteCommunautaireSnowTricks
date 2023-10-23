@@ -17,7 +17,7 @@ class Comments
     private ?string $content = null;
 
     #[ORM\Column]
-    private ?bool $isApproved = null;
+    private ?bool $isApproved = false;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
