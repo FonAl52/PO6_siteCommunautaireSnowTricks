@@ -44,11 +44,6 @@ class TricksType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
-                'required' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'mapped' => false,
                 'attr' => [
                     'multiple' => true,
                 ],
