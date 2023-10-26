@@ -25,21 +25,29 @@
             {% endfor %}
             <form method="post" action="{{ path('create.tricks') }}" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="">{{ form_label(form.title) }}</label>
+                    <label for="title">{{ form_label(form.title) }}</label>
                     {{ form_widget(form.title) }}
                 </div>
                 <div class="form-group">
-                    <label for="">{{ form_label(form.description) }}</label>
+                    <label for="description">{{ form_label(form.description) }}</label>
                     {{ form_widget(form.description) }}
                 </div>
-                <div id="imageFields">
-                    <div class="form-group">
-                        <label for="">{{ form_label(form.tricksImage) }}</label>
-                        <input type="file" class="form-control-file" name="tricks[tricksImage][]" id="tricksImage">
+                <div class="form-group">
+                    <label>Vidéos</label>
+                    <div id="tricks_tricksVideo">
+                        <input type="file" id="tricks_tricksVideo" name="tricks[tricksVideo][][videoFile]">
+                        <small class="form-text text-muted">Téléchargez des vidéos pour votre trick (facultatif).</small>
                     </div>
                 </div>
-
-            {{ form(form) }}
+                <div class="form-group">
+                    <label for="id_group">{{ form_label(form.id_group) }}</label>
+                    {{ form_widget(form.id_group) }}
+                </div>
+                <div class="form-group">
+                    <label for="submit">{{ form_label(form.submit) }}</label>
+                    {{ form_widget(form.submit) }}
+                </div>
+                {{ form_rest(form) }}
             </form>
         </div>
     </div>

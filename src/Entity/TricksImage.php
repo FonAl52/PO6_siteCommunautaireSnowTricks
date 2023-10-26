@@ -17,7 +17,7 @@ class TricksImage
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'tricksImage')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Tricks $tricks = null;
 
     #[Vich\UploadableField(mapping: 'tricks_images', fileNameProperty: 'imageName')]
@@ -37,18 +37,6 @@ class TricksImage
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getTricks(): ?Tricks

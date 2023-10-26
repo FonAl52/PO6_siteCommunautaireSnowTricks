@@ -10,8 +10,10 @@ use App\Form\TricksType;
 use App\Form\TricksImageType;
 use App\Entity\Tricks;
 use App\Entity\TricksImage;
+use App\Entity\TricksVideo;
 use Doctrine\ORM\EntityManagerInterface;
 use Cocur\Slugify\Slugify;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class CreateTricksController extends AbstractController
 {
@@ -29,41 +31,40 @@ class CreateTricksController extends AbstractController
     ): Response {
         $tricks = new Tricks();
         $form = $this->createForm(TricksType::class, $tricks);
-
         $form->handleRequest($request);
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $title = $tricks->getTitle();
-
+    
             $slugify = new Slugify();
             $slug = $slugify->slugify($title);
-
+    
             $tricks->setSlug($slug);
+           
+            $tricksVideosData = $form->get('tricksVideo')->getData();
 
-            $tricksImagesData = $request->files->get('tricks')['tricksImage'];
+            foreach ($tricksVideosData as $videoData) {
 
-            foreach ($tricksImagesData as $imageData) {
-                $file = $imageData['imageFile']['file'];
-
-                $tricksImage = new TricksImage();
-                $tricksImage->setImageFile($file);
-
-                $tricks->addTricksImage($tricksImage);
+                $tricksVideo = new TricksVideo();
+                $tricksVideo->setTricks($tricks);
+                
+                $manager->persist($tricksVideo);
             }
-
+    
             $user = $this->getUser();
             if ($user) {
                 $tricks->setUser($user);
             }
-
+    
             $manager->persist($tricks);
             $manager->flush();
-
+    
             return $this->redirectToRoute('create.tricks');
         }
-
+    
         return $this->render('tricks/createTricks.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+    
 }
