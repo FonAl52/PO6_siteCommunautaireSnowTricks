@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Tricks;
 use App\Entity\Group;
 use App\Entity\TricksImage;
+use App\Entity\TricksVideo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,7 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
-
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class TricksType extends AbstractType
@@ -38,17 +40,19 @@ class TricksType extends AbstractType
                 ],
                 'attr' => ['class' => 'form-control'],
             ])
-            ->add('tricksImage', CollectionType::class, [
-                'entry_type' => TricksImageType::class,
-                'entry_options' => ['label' => false],
+            ->add('tricksVideo', CollectionType::class, [
+                'entry_type' => TricksVideoType::class, 
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+                'required' => false,
+                'label' => 'Vidéos',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
-                'attr' => [
-                    'multiple' => true,
-                ],
             ])
             ->add('id_group', EntityType::class, [
+                'label' => 'Groupe',
                 'class' => Group::class,
                 'choice_label' => 'name',
                 'multiple' => true,
