@@ -11,7 +11,7 @@
             <div class="text-center mb-5 mt-4">
                 <h1 class="fw-bolder">Création de Tricks</h1>
             </div>
-
+            
             {% for message in app.flashes('success') %}
                 <div class="alert alert-success mt-4">
                     {{ message }}
@@ -23,32 +23,7 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <form method="post" action="{{ path('create.tricks') }}" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="title">{{ form_label(form.title) }}</label>
-                    {{ form_widget(form.title) }}
-                </div>
-                <div class="form-group">
-                    <label for="description">{{ form_label(form.description) }}</label>
-                    {{ form_widget(form.description) }}
-                </div>
-                <div class="form-group">
-                    <label>Vidéos</label>
-                    <div id="tricks_tricksVideo">
-                        <input type="file" id="tricks_tricksVideo" name="tricks[tricksVideo][][videoFile]">
-                        <small class="form-text text-muted">Téléchargez des vidéos pour votre trick (facultatif).</small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="id_group">{{ form_label(form.id_group) }}</label>
-                    {{ form_widget(form.id_group) }}
-                </div>
-                <div class="form-group">
-                    <label for="submit">{{ form_label(form.submit) }}</label>
-                    {{ form_widget(form.submit) }}
-                </div>
-                {{ form_rest(form) }}
-            </form>
+           {{ form(form) }}
         </div>
     </div>
 </section>

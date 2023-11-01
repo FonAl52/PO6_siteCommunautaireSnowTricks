@@ -27,10 +27,11 @@
                         </div>
                             {% if tricks.tricksImage|length > 0 %}
                                 {% for image in tricks.tricksImage %}
-                                    <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>                                        {% endfor %}
-                                {% else %}
-                                    <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ tricks.title }}" class="tricks_hero_image"/>
-                                {% endif %}
+                                    <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>                                        
+                                {% endfor %}
+                            {% else %}
+                                <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ tricks.title }}" class="tricks_hero_image"/>
+                            {% endif %}
                         <!-- Titre superposé -->
                         <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">{{ tricks.title }}</h1>
                     </div>
@@ -41,6 +42,7 @@
                     <div class="row gx-5">
                             <!-- Post content-->
                             <article>
+                                <!-- Post images-->
                                 <section class="mb-5 d-flex justify-content-between align-items-center">
                                     <div class="card h-60 shadow border-0">
                                         {% if tricks.tricksImage|length > 0 %}
@@ -50,6 +52,10 @@
                                         {% else %}
                                             <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
                                         {% endif %}
+                                    </div>
+                                <!-- Post videos-->
+                                    <div class="card h-60 shadow border-0">
+                                                    <iframe class="tricks_underHero_video" src="https://www.youtube.com/embed/UvT4D4a62jY" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </section>
                                 <!-- Post content-->

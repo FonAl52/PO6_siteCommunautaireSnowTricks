@@ -40,6 +40,11 @@ class TricksType extends AbstractType
                 ],
                 'attr' => ['class' => 'form-control'],
             ])
+            ->add('TriksImage', FileType::class, [
+                'multiple' => true,
+                'label' => 'Ajouter une photo',
+                'mapped' => false
+            ])
             ->add('tricksVideo', CollectionType::class, [
                 'entry_type' => TricksVideoType::class, 
                 'allow_add' => true,

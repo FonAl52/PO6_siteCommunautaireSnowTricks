@@ -40,6 +40,24 @@ class CreateTricksController extends AbstractController
             $slug = $slugify->slugify($title);
     
             $tricks->setSlug($slug);
+
+            //add pictures
+            $medias = $form->get('TriksImage')->getData();
+            foreach ($medias as $media) {
+                  $fichier = md5(uniqid()) . '.' . $media->guessExtension();
+                  try {
+                      $media->move(
+                          $this->getParameter('trick_img_directory'),
+                          $fichier
+                      );
+                  } catch (FileException $e) {
+                      //
+                  }
+                  $photo = new TricksImage();
+                  $photo->setImageName($fichier);
+                  $tricks->addTricksImage($photo);
+              }
+            $tricks->addTricksImage($photo);
            
             $tricksVideosData = $form->get('tricksVideo')->getData();
 
@@ -59,7 +77,7 @@ class CreateTricksController extends AbstractController
             $manager->persist($tricks);
             $manager->flush();
     
-            return $this->redirectToRoute('create.tricks');
+            return $this->redirectToRoute('home.index');
         }
     
         return $this->render('tricks/createTricks.html.twig', [

@@ -78,6 +78,12 @@
     object-fit: cover;
     overflow: hidden;
 }
+.tricks_underHero_video{
+    width: 20vw;
+    height: 20vh;
+    object-fit: cover;
+    overflow: hidden;
+}
 
 .profile-picture{
     width: 50px;
