@@ -41,7 +41,6 @@ class CreateTricksController extends AbstractController
     
             $tricks->setSlug($slug);
 
-            //add pictures
             $medias = $form->get('TriksImage')->getData();
             foreach ($medias as $media) {
                   $fichier = md5(uniqid()) . '.' . $media->guessExtension();
@@ -56,18 +55,13 @@ class CreateTricksController extends AbstractController
                   $photo = new TricksImage();
                   $photo->setImageName($fichier);
                   $tricks->addTricksImage($photo);
-              }
-            $tricks->addTricksImage($photo);
-           
-            $tricksVideosData = $form->get('tricksVideo')->getData();
-
-            foreach ($tricksVideosData as $videoData) {
-
-                $tricksVideo = new TricksVideo();
-                $tricksVideo->setTricks($tricks);
-                
-                $manager->persist($tricksVideo);
             }
+            $tricks->addTricksImage($photo);
+            
+            $tricksVideosUrls = $form->get('tricksVideo')->getData();
+            $video = new TricksVideo();
+            $video->setVideoUrl($tricksVideosUrls);
+            $tricks->addTricksVideo($video);
     
             $user = $this->getUser();
             if ($user) {
