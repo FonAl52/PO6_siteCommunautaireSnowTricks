@@ -16,32 +16,74 @@
                     {{ message }}
                 </div>
             {% endfor %}
-            <div class="container-fluid p-0">
-                <div class="position-relative">
-                    <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                    <div class="position-absolute top-0 end-0 m-3">
-                        {% if currentUser is not null and currentUser == tricks.user %}
-                            <a class="btn btn-link" href="{{ path('edit.tricks', {slug: tricks.slug}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
-                            <a class="btn btn-link" href="#"><i class="bi bi-trash-fill"></i></a>
-                        {% endif %}
+                <div class="container-fluid p-0">
+                    <div class="position-relative">
+                        <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                        <div class="position-absolute top-0 end-0 m-3">
+                            {% if currentUser is not null and currentUser == tricks.user %}
+                                <a class="btn btn-link" href="{{ path('delete.tricks', {slug: tricks.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                            {% endif %}
+                        </div>
+                            {% if tricks.tricksImage|length > 0 %}
+                                {% set firstImageDisplayed = false %}
+                                {% for image in tricks.tricksImage %}
+                                    {% if not firstImageDisplayed %}
+                                        <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>
+                                        {% set firstImageDisplayed = true %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        <!-- Titre superposé -->
+                        <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">{{ tricks.title }}</h1>
                     </div>
-                    {% if tricks.tricksImage|length > 0 %}
-                        {% for image in tricks.tricksImage %}
-                            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>
-                        {% endfor %}
-                    {% else %}
-                        <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ tricks.title }}"/>
-                    {% endif %}
-                    <!-- Titre superposé -->
-                    <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">{{ tricks.title }}</h1>
                 </div>
-            </div>
         </section>
         <section class="py-5">
             <div class="container px-5 my-5">
                 <div class="row gx-5">
                     <!-- Form content -->
                     <article>
+                        <!-- Post medias-->
+                                <div class="mobile">
+                                    <div class="row">
+                                        <button id="togg1" class="btn btn-secondary btn-lg px-4 me-sm-3 mb-5">See medias</button>
+                                    </div>
+                                </div>         
+                                <div id="d1" class="desktop">
+                                    <div class="d-flex">
+                                        <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-6 justify-content-around">
+                                                {% if tricks.tricksImage|length > 0 %}
+                                                    {% for key, image in tricks.tricksImage %}
+                                                        {% if key > 0 %} {# Vérifie si ce n'est pas la première image #}
+                                                        <div class="col mb-5">
+                                                            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
+                                                            <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                                                            <div class="m-3">
+                                                                {% if currentUser is not null and currentUser == tricks.user %}
+                                                                    <a class="btn btn-link" href="{{ path('delete.tricks', {slug: tricks.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endif %}
+                                                
+                                            {% if tricks.tricksVideo is not empty %}
+                                                {% for video in tricks.tricksVideo %}
+                                                <div class="col mb-5">
+                                                    <iframe class="tricks_underHero_video" src="{{ video.videoUrl }}" frameborder="0" allowfullscreen></iframe>
+                                                    <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                                                    <div class="m-3">
+                                                        {% if currentUser is not null and currentUser == tricks.user %}
+                                                            <a class="btn btn-link" href="{{ path('delete.tricks', {slug: tricks.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>    
+                                    </div>
+                                </div>
                         <section class="mb-5 d-flex justify-content-between align-items-center">
                             <div class="card w-100 h-60 shadow border-0 p-5">
                                 {{ form_start(form) }}

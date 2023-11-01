@@ -78,6 +78,7 @@
     object-fit: cover;
     overflow: hidden;
 }
+
 .tricks_underHero_video{
     width: 20vw;
     height: 20vh;
@@ -91,10 +92,36 @@
     object-fit: cover;
     overflow: hidden;
 }
-
+.desktop{
+    display: block;
+} 
+.mobile {
+    display: none;
+}
 @media (max-width: 767px) {
     .section-background {
         height: 100vh;
         width: auto;
+    }
+    .desktop{
+        display: none;
+    } 
+    .mobile {
+        display: block;
+    }
+    .active {
+        display: block;
+    }
+    .tricks_underHero_image{
+        width: 100%;
+        height: 30vh;
+        object-fit: cover;
+        overflow: hidden;
+    }
+    .tricks_underHero_video{
+        width: 100%;
+        height: 30vh;
+        object-fit: cover;
+        overflow: hidden;
     }
 }
