@@ -22,9 +22,13 @@
                     {% for trick in tricks %}
                         <div class="col mb-5">
                             <div class="card h-60 shadow border-0">
+                                {% set firstImageDisplayed = false %}
                                 {% if trick.tricksImage|length > 0 %}
                                     {% for image in trick.tricksImage %}
-                                        <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ trick.title }}" class="image-600x350"/>
+                                        {% if not firstImageDisplayed %}
+                                            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ trick.title }}" class="image-600x350"/>
+                                            {% set firstImageDisplayed = true %}
+                                        {% endif %}
                                     {% endfor %}
                                 {% else %}
                                     <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ trick.title }}" class="image-600x350"/>
@@ -33,7 +37,7 @@
                                     <!-- Titre de la carte -->
                                     <div class="d-flex justify-content-between align-items-top">
                                         <div class="figure-card-title">
-                                            <a class="text-decoration-none link-dark" href="{{ path('detailed.tricks', {slug: trick.slug}) }}"><h5 class="card-title mb-3">{{ trick.title }}</h5></a>
+                                            <a class="text-decoration-none link-dark" href="{{ path('detailed.tricks', {slug: trick.slug}) }}"><h8 class="card-title mb-3">{{ trick.title }}</h8></a>
                                         </div>
                                         <!-- Boutons avec icônes (stylo et poubelle) -->
                                         <div class="d-flex justify-content-end align-items-center">
@@ -56,12 +60,15 @@
             </section>
             <section id="top_home" class="section">
                 <div class="arrow-button_up position-relative m-3">
-                    <a class="btn btn-link" href="#top_home"><i class="bi bi-arrow-up-circle-fill"></i></a><!-- Bouton de fléche -->
+                    <a id="voirPlusBtn" class="btn btn-link" href="#top_home"><i class="bi bi-arrow-up-circle-fill"></i></a><!-- Bouton de fléche -->
                 </div>
             </section>
         </main>
 {% endblock %}
 
+{% block javascripts %}
+
+{% endblock %}
 
 
 
