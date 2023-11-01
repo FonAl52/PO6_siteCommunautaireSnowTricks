@@ -43,19 +43,38 @@ class TricksType extends AbstractType
             ->add('TriksImage', FileType::class, [
                 'multiple' => true,
                 'label' => 'Ajouter une photo',
-                'mapped' => false
-            ])
-            ->add('tricksVideo', CollectionType::class, [
-                'entry_type' => TricksVideoType::class, 
-                'allow_add' => true,
-                'allow_delete' => true,
-                'by_reference' => false,
-                'required' => false,
-                'label' => 'Vidéos',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
+                'attr' => ['class' => 'form-control'],
+                'mapped' => false
             ])
+            // ->add('tricksVideo', CollectionType::class, [
+            //     'entry_type' => TricksVideoType::class,
+            //     'label' => 'Ajouter une (ou plusieurs) vidéo(s)',
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            //     'attr' => ['class' => 'form-control'],
+            // ])
+            ->add('tricksVideo', TextType::class, [
+                'label' => 'Ajouter une (ou plusieurs) vidéo(s)',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'attr' => ['class' => 'form-control'],
+                'required' => false,
+                'mapped' => false,
+                'constraints' => [
+                    new Assert\Url([
+                        'message' => 'L\'URL de la vidéo n\'est pas valide.',
+                    ]),
+                    new Assert\Length([
+                        'max' => 255,
+                        'maxMessage' => 'L\'URL de la vidéo est trop longue (maximum {{ limit }} caractères).',
+                    ]),
+                ],
+            ])      
             ->add('id_group', EntityType::class, [
                 'label' => 'Groupe',
                 'class' => Group::class,
