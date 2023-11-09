@@ -53,8 +53,8 @@
                                     </div>
                                 </div>         
                                 <div id="d1" class="desktop">
-                                    <div class="d-flex">
-                                        <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-6 justify-content-around">
+                                    <div id="media-container" class="d-flex">
+                                        <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-6">
                                                 {% if tricks.tricksImage|length > 0 %}
                                                     {% for key, image in tricks.tricksImage %}
                                                         {% if key > 0 %} {# Vérifie si ce n'est pas la première image #}
@@ -121,7 +121,7 @@
                                                 <div class="flex-shrink-0"><img class="rounded-circle profile-picture" src="../images/userImages/{{ comments.author.imageName }}" alt="{{ comments.author }}'s image profile" /></div>
 
                                                 {% else %}
-                                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                <div class="flex-shrink-0"><img class="rounded-circle profile-picture" src="../images/src_site/userProfilePicturePlaceholder.jpg" alt="..." /></div>
                                                 {% endif %}
                                                 <div class="ms-3">
                                                     <div class="fw-bold">{{ comments.author }}</div>
