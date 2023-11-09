@@ -52,9 +52,17 @@
 }
 
 .figure-card-title{
-    padding: 8% 8% 0 0;
     text-align: left;
     white-space: nowrap;
+}
+
+.figure-card-btn{
+    width: 30%;
+    text-align: right;
+}
+
+.figure-card-btn a{
+    padding: 0;
 }
 
 .image-600x350 {
@@ -63,6 +71,22 @@
     height: 15vh;
     object-fit: cover;
     overflow: hidden;
+}
+
+#media-container{
+    justify-content: center;
+}
+
+#media-container .row{
+    width: 100%;
+    justify-content: space-between;
+    align-content: center;
+}
+
+#media-container .row .col{
+    width: 20vw;
+    height: 20vh;
+    margin-left: -1%;
 }
 
 .tricks_hero_image{
@@ -92,12 +116,15 @@
     object-fit: cover;
     overflow: hidden;
 }
+
 .desktop{
     display: block;
 } 
+
 .mobile {
     display: none;
 }
+
 @media (max-width: 767px) {
     .section-background {
         height: 100vh;
@@ -123,5 +150,10 @@
         height: 30vh;
         object-fit: cover;
         overflow: hidden;
+    }
+    #media-container .row .col{
+        width: 100%;
+        height: auto;
+        margin-left: 0;
     }
 }
