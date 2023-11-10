@@ -40,6 +40,7 @@ class EditTricksType extends AbstractType
                 'multiple' => true,
                 'label' => 'Ajouter une photo',
                 'label_attr' => [
+                    'id' => 'photoUpdate',
                     'class' => 'form-label mt-4'
                 ],
                 'attr' => ['class' => 'form-control'],
@@ -49,6 +50,7 @@ class EditTricksType extends AbstractType
             ->add('tricksVideo', TextType::class, [
                 'label' => 'Ajouter une (ou plusieurs) vidéo(s)',
                 'label_attr' => [
+                    'id' => 'videoUpdate',
                     'class' => 'form-label mt-4'
                 ],
                 'attr' => ['class' => 'form-control'],
