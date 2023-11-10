@@ -16,6 +16,17 @@
                             <a class="btn btn-link" href="#tricks"><i class="bi bi-arrow-down-circle-fill"></i></a><!-- Bouton de fléche -->
                 </div>
             </section>
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
             <!-- Blog preview section-->
             <section id="tricks" class="mx-auto px-5 bg-dark py-5">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5">

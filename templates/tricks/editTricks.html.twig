@@ -21,7 +21,11 @@
                         <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
                         <div class="position-absolute top-0 end-0 m-3">
                             {% if currentUser is not null and currentUser == tricks.user %}
-                                <a class="btn btn-link" href="{{ path('delete.tricks', {slug: tricks.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                <a class="btn btn-link" href="#photoUpdate"><i class="bi bi-pencil-fill me-2"></i></a>
+                                {% if tricks.tricksImage|length > 0 %}
+                                    {% set firstImage = tricks.tricksImage.first() %}
+                                    <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': firstImage.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
+                                {% endif %}
                             {% endif %}
                         </div>
                             {% if tricks.tricksImage|length > 0 %}
@@ -58,9 +62,10 @@
                                                         <div class="col mb-5">
                                                             <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
                                                             <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                                                            <div class="m-3">
+                                                            <div class="m-3 d-flex">
                                                                 {% if currentUser is not null and currentUser == tricks.user %}
-                                                                    <a class="btn btn-link" href="{{ path('delete.tricks', {slug: tricks.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                                                    <a class="btn btn-link" href="#photoUpdate"><i class="bi bi-pencil-fill me-2"></i></a>
+                                                                    <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': image.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
                                                                 {% endif %}
                                                             </div>
                                                         </div>
@@ -73,9 +78,10 @@
                                                 <div class="col mb-5">
                                                     <iframe class="tricks_underHero_video" src="{{ video.videoUrl }}" frameborder="0" allowfullscreen></iframe>
                                                     <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                                                    <div class="m-3">
+                                                    <div class="m-3 d-flex">
                                                         {% if currentUser is not null and currentUser == tricks.user %}
-                                                            <a class="btn btn-link" href="{{ path('delete.tricks', {slug: tricks.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                                            <a class="btn btn-link" href="#videoUpdate"><i class="bi bi-pencil-fill me-2"></i></a>
+                                                            <a class="btn btn-link delete-video-btn" href="{{ path('delete.videos', {'id': video.id}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cette vidéo ?')"><i class="bi bi-trash-fill"></i></a>
                                                         {% endif %}
                                                     </div>
                                                 </div>

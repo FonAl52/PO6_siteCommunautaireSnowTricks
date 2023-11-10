@@ -27,8 +27,7 @@ class DeleteTricksController extends AbstractController
 
         $entityManager->remove($tricks);
         $entityManager->flush();
-
-        
+ 
         return $this->redirectToRoute('home.index');
     }
 }
