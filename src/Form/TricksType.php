@@ -19,7 +19,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use App\Validator\Constraints\VideoUrls;
 
 class TricksType extends AbstractType
 {
@@ -49,16 +49,8 @@ class TricksType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'mapped' => false
             ])
-            // ->add('tricksVideo', CollectionType::class, [
-            //     'entry_type' => TricksVideoType::class,
-            //     'label' => 'Ajouter une (ou plusieurs) vidéo(s)',
-            //     'label_attr' => [
-            //         'class' => 'form-label mt-4'
-            //     ],
-            //     'attr' => ['class' => 'form-control'],
-            // ])
             ->add('tricksVideo', TextType::class, [
-                'label' => 'Ajouter une (ou plusieurs) vidéo(s)',
+                'label' => 'Ajouter des vidéos (Les URLs des vidéos doivent commencer par "https://)',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -66,15 +58,20 @@ class TricksType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new Assert\Url([
-                        'message' => 'L\'URL de la vidéo n\'est pas valide.',
-                    ]),
-                    new Assert\Length([
-                        'max' => 255,
-                        'maxMessage' => 'L\'URL de la vidéo est trop longue (maximum {{ limit }} caractères).',
-                    ]),
+                    new VideoUrls(),
                 ],
-            ])      
+            ])
+            // ->add('tricksVideo', CollectionType::class, [
+            //     'entry_type' => TricksVideoType::class,  // Assurez-vous que l'entrée correspond à TricksVideoType
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'by_reference' => false,
+            //     'label' => 'Ajouter une (ou plusieurs) vidéo(s)',
+            //     'label_attr' => [
+            //         'class' => 'form-label mt-4'
+            //     ],
+            //     'attr' => ['class' => 'form-control'],
+            // ])
             ->add('id_group', EntityType::class, [
                 'label' => 'Groupe',
                 'class' => Group::class,
@@ -88,6 +85,7 @@ class TricksType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
+                'label' => 'Créer',
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ]

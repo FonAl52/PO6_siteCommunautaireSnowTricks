@@ -16,10 +16,12 @@ class TricksVideoType extends AbstractType
         $builder
         ->add('videoUrl', TextType::class, [
             'label' => 'URL de la vidéo',
-            'required' => false,
             'label_attr' => [
-                'class' => 'form-label mt-4',
+                'class' => 'form-label mt-4'
             ],
+            'attr' => ['class' => 'form-control'],
+            'required' => false,
+            'mapped' => false,
             'constraints' => [
                 new Assert\Url([
                     'message' => 'L\'URL de la vidéo n\'est pas valide.',

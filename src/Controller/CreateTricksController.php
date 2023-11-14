@@ -58,11 +58,24 @@ class CreateTricksController extends AbstractController
             }
             $tricks->addTricksImage($photo);
             
+            // Récupérer la chaîne d'URLs du formulaire
             $tricksVideosUrls = $form->get('tricksVideo')->getData();
-            $video = new TricksVideo();
-            $video->setVideoUrl($tricksVideosUrls);
-            $tricks->addTricksVideo($video);
-    
+
+            // Diviser la chaîne en un tableau en utilisant les espaces et virgules comme délimiteurs
+            $urlsArray = explode(', ', $tricksVideosUrls);
+
+            foreach ($urlsArray as $url) {
+                // Vérifier si l'URL commence par "https://"
+                if (strpos($url, 'https://') === 0) {
+                    // Créer une nouvelle instance de TricksVideo
+                    $video = new TricksVideo();
+                    $video->setVideoUrl($url);
+                
+                    // Ajouter le TricksVideo au Tricks
+                    $tricks->addTricksVideo($video);  
+                }
+            }
+           
             $user = $this->getUser();
             if ($user) {
                 $tricks->setUser($user);

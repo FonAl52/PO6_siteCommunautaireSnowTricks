@@ -13,9 +13,15 @@ This repository is Allan Fontaine's sixth project for the Openclassrooms PHP/Sym
 1. Clone the repository.
 2. Run `composer install`.
 3. Copy the `.env` file and configure the database.
-4. Run migrations: `php bin/console doctrine:migrations:migrate`.
-5. Load fixtures if necessary: `php bin/console doctrine:fixtures:load`.
+4. Run `php bin/console doctrine:databse:create`. 
+5. Run migrations: `php bin/console doctrine:migrations:migrate`.
+6. Load fixtures if necessary: `php bin/console doctrine:fixtures:load`.
 
 ## Launching the Development Server
 
 Run `symfony serve` and access http://localhost:8000.
+
+## Se connecter avec les identifiants suivants : 
+
+ ``identifiant : admin@snowtricks.fr 
+password : password ``
