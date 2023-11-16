@@ -68,8 +68,8 @@
                     {% endfor %}
                 </div>
                 <div class="row gx-5">
-                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-center">
-                                <a class="btn btn-secondary btn-lg px-4 me-sm-3" href="#features">Voir plus</a>
+                    <div class="navigation d-flex justify-content-center mb-8">
+                        {{ knp_pagination_render(tricks) }}
                     </div>
                 </div>
             </section>
