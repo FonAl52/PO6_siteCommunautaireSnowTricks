@@ -125,6 +125,10 @@
     display: none;
 }
 
+.pagination span,.pagination a {
+    color: #212529;
+}
+
 @media (max-width: 767px) {
     .section-background {
         height: 100vh;
