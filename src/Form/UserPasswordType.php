@@ -35,6 +35,7 @@ class UserPasswordType extends AbstractType
                 'invalid_message' => 'Merci de verfifier votre email.'
             ])
             ->add('submit', SubmitType::class, [
+                'label' => 'Créer',
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ]
