@@ -131,9 +131,10 @@ class UserController extends AbstractController
                     $mail->addAddress($userEmail);     //Add a recipient
                 
                     //Content
+                    $mail->CharSet = 'UTF-8';
                     $mail->isHTML(true);                                  //Set email format to HTML
                     $mail->Subject = 'Snow Tricks 🏂 - Réinitialisation de mot de passe';
-                    $mail->Body = 'Voici votre url de réinitialisation : ' . $url;
+                    $mail->Body = 'Voici votre <a href="' . $url . '">lien de réinitialisation</a>.';
                     
                     $mail->send();
                     echo 'Message has been sent';

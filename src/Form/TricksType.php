@@ -20,6 +20,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints\VideoUrls;
+use Symfony\Component\Validator\Constraints\Length;
 
 class TricksType extends AbstractType
 {
@@ -32,6 +33,12 @@ class TricksType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'attr' => ['class' => 'form-control'],
+                'constraints' => [
+                    new Length([
+                        'max' => 12,
+                        'maxMessage' => 'Le titre ne peut pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',

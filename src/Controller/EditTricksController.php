@@ -59,9 +59,11 @@ class EditTricksController extends AbstractController
             }
 
             $tricksVideosUrls = $form->get('tricksVideo')->getData();
-            $video = new TricksVideo();
-            $video->setVideoUrl($tricksVideosUrls);
-            $tricks->addTricksVideo($video);
+            if (!empty($tricksVideosUrls)) {
+                $video = new TricksVideo();
+                $video->setVideoUrl($tricksVideosUrls);
+                $tricks->addTricksVideo($video);
+            }
 
             $tricks->setUpdatedAtValue();
 

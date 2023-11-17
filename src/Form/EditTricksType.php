@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Length;
 
 class EditTricksType extends AbstractType
 {
@@ -28,6 +29,12 @@ class EditTricksType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'attr' => ['class' => 'form-control'],
+                'constraints' => [
+                    new Length([
+                        'max' => 12,
+                        'maxMessage' => 'Le titre ne peut pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
@@ -79,6 +86,7 @@ class EditTricksType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
+                'label' => 'Modifier',
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ]
