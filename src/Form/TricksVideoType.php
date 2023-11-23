@@ -6,16 +6,17 @@ use App\Entity\TricksVideo;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType; // Importer le TextType
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Validator\Constraints\VideoUrls;
 class TricksVideoType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('videoUrl', TextType::class, [
-            'label' => 'URL de la vidéo',
+        ->add('tricksVideo', TextType::class, [
+            'label' => 'Ajouter des vidéos (Les URLs des vidéos doivent commencer par "https://)',
             'label_attr' => [
                 'class' => 'form-label mt-4'
             ],
@@ -23,18 +24,18 @@ class TricksVideoType extends AbstractType
             'required' => false,
             'mapped' => false,
             'constraints' => [
-                new Assert\Url([
-                    'message' => 'L\'URL de la vidéo n\'est pas valide.',
-                ]),
-                new Assert\Length([
-                    'max' => 255,
-                    'maxMessage' => 'L\'URL de la vidéo est trop longue (maximum {{ limit }} caractères).',
-                ]),
+                new VideoUrls(),
             ],
+        ])
+        ->add('submit', SubmitType::class, [
+            'label' => "Modifier la vidéo",
+            'attr' => [
+                'class' => 'btn btn-primary mt-4'
+            ]
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => TricksVideo::class,
