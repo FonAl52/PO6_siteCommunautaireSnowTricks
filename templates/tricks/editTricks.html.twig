@@ -1,101 +1,110 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}🏂 Snow Tricks - Tricks Title
-{% endblock %}
+{% block title %}🏂 Snow Tricks - {{ tricks.title }} {% endblock %}
 
 {% block body %}
-        <section>
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success mt-4">
-                    {{ message }}
-                </div>
-            {% endfor %}
+    <section>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
 
-            {% for message in app.flashes('warning') %}
-                <div class="alert alert-warning mt-4">
-                    {{ message }}
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-warning mt-4">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="container-fluid p-0">
+            <div class="position-relative">
+                <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                <div class="position-absolute top-0 end-0 m-3">
+                    {% if currentUser is not null and currentUser == tricks.user %}
+                        {% if tricks.tricksImage|length > 0 %}
+                            {% set firstImage = tricks.tricksImage.first() %}
+                            <a class="btn btn-link" href="{{ path('update.photos', {'id': firstImage.id}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
+                            <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': firstImage.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
+                        {% endif %}
+                    {% endif %}
                 </div>
-            {% endfor %}
-                <div class="container-fluid p-0">
-                    <div class="position-relative">
-                        <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                        <div class="position-absolute top-0 end-0 m-3">
-                            {% if currentUser is not null and currentUser == tricks.user %}
-                                {% if tricks.tricksImage|length > 0 %}
-                                    {% set firstImage = tricks.tricksImage.first() %}
-                                    <a class="btn btn-link" href="{{ path('update.photos', {'id': firstImage.id}) }}" onclick=""><i class="bi bi-pencil-fill me-2"></i></a>
-                                    <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': firstImage.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
-                                {% endif %}
-                            {% endif %}
+
+                {% if tricks.tricksImage|length > 0 %}
+                    {% set firstImageDisplayed = false %}
+                    {% for image in tricks.tricksImage %}
+                        {% if not firstImageDisplayed %}
+                            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>
+                            {% set firstImageDisplayed = true %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Titre superposé -->
+                <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">{{ tricks.title }}</h1>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container px-5 my-5">
+            <div class="row gx-5">
+                <!-- Form content -->
+                <article>
+                    <!-- Post medias -->
+                    <div class="mobile">
+                        <div class="row">
+                            <button id="togg1" class="btn btn-secondary btn-lg px-4 me-sm-3 mb-5">See medias</button>
                         </div>
-                            {% if tricks.tricksImage|length > 0 %}
-                                {% set firstImageDisplayed = false %}
-                                {% for image in tricks.tricksImage %}
-                                    {% if not firstImageDisplayed %}
-                                        <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_hero_image"/>
-                                        {% set firstImageDisplayed = true %}
-                                    {% endif %}
-                                {% endfor %}
-                            {% endif %}
-                        <!-- Titre superposé -->
-                        <h1 class="fw-bolder mb-1 position-absolute top-50 start-50 translate-middle" style="color: #fff; transform: translate(-50%, -50%); z-index: 1;">{{ tricks.title }}</h1>
                     </div>
-                </div>
-        </section>
-        <section class="py-5">
-            <div class="container px-5 my-5">
-                <div class="row gx-5">
-                    <!-- Form content -->
-                    <article>
-                        <!-- Post medias-->
-                                <div class="mobile">
-                                    <div class="row">
-                                        <button id="togg1" class="btn btn-secondary btn-lg px-4 me-sm-3 mb-5">See medias</button>
-                                    </div>
-                                </div>         
-                                <div id="d1" class="desktop">
-                                    <div class="d-flex">
-                                        <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-6 justify-content-around">
-                                                {% if tricks.tricksImage|length > 0 %}
-                                                    {% for key, image in tricks.tricksImage %}
-                                                        {% if key > 0 %} {# Vérifie si ce n'est pas la première image #}
-                                                        <div class="col mb-5">
-                                                            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
-                                                            <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                                                            <div class="m-3 d-flex">
-                                                                {% if currentUser is not null and currentUser == tricks.user %}
-                                                                    <a class="btn btn-link edit-photo" href="{{ path('update.photos', {'id': image.id}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
-                                                                    <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': image.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
-                                                                {% endif %}
-                                                            </div>
-                                                        </div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                {% endif %}
-                                                
-                                            {% if tricks.tricksVideo is not empty %}
-                                                {% for video in tricks.tricksVideo %}
-                                                <div class="col mb-5">
-                                                    <iframe class="tricks_underHero_video" src="{{ video.videoUrl }}" frameborder="0" allowfullscreen></iframe>
-                                                    <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
-                                                    <div class="m-3 d-flex">
-                                                        {% if currentUser is not null and currentUser == tricks.user %}
-                                                            <a class="btn btn-link" href="#videoUpdate"><i class="bi bi-pencil-fill me-2"></i></a>
-                                                            <a class="btn btn-link delete-video-btn" href="{{ path('delete.videos', {'id': video.id}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cette vidéo ?')"><i class="bi bi-trash-fill"></i></a>
-                                                        {% endif %}
-                                                    </div>
+
+                    <div id="d1" class="desktop">
+                        <div class="d-flex">
+                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-6 justify-content-around">
+                                {% if tricks.tricksImage|length > 0 %}
+                                    {% for key, image in tricks.tricksImage %}
+                                        {% if key > 0 %} {# Vérifie si ce n'est pas la première image #}
+                                            <div class="col mb-5">
+                                                <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
+                                                <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                                                <div class="m-3 d-flex">
+                                                    {% if currentUser is not null and currentUser == tricks.user %}
+                                                        <a class="btn btn-link edit-photo" href="{{ path('update.photos', {'id': image.id}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
+                                                        <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': image.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
+                                                    {% endif %}
                                                 </div>
-                                                {% endfor %}
-                                            {% endif %}
-                                        </div>    
-                                    </div>
-                                </div>
-                        <section class="mb-5 d-flex justify-content-between align-items-center">
-                            <div class="card w-100 h-60 shadow border-0 p-5">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+
+                                {% if tricks.tricksVideo is not empty %}
+                                    {% for video in tricks.tricksVideo %}
+                                        <div class="col mb-5">
+                                            <iframe class="tricks_underHero_video" src="{{ video.videoUrl }}" frameborder="0" allowfullscreen></iframe>
+                                            <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                                            <div class="m-3 d-flex">
+                                                {% if currentUser is not null and currentUser == tricks.user %}
+                                                    <a class="btn btn-link edit-video" href="{{ path('update.videos', {'id': video.id}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
+                                                    <a class="btn btn-link delete-video-btn" href="{{ path('delete.videos', {'id': video.id}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cette vidéo ?')"><i class="bi bi-trash-fill"></i></a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <section class="mb-5 d-flex justify-content-between align-items-center">
+                        <div class="card w-100 h-60 shadow border-0 p-5">
                             {% if photoForm is defined %}
                                 {{ form_start(photoForm) }}
                                 {{ form_widget(photoForm) }}
                                 {{ form_end(photoForm) }}
+                            {% elseif videoForm is defined %}
+                                {{ form_start(videoForm) }}
+                                {{ form_widget(videoForm) }}
+                                {{ form_end(videoForm) }}
                             {% else %}
                                 {{ form_start(form) }}
                                 <div class="form-group">
@@ -106,10 +115,10 @@
                                 </div>
                                 {{ form_end(form) }}
                             {% endif %}
-                            </div>
-                        </section>
-                    </article>
-                </div>
+                        </div>
+                    </section>
+                </article>
             </div>
-        </section>
+        </div>
+    </section>
 {% endblock %}

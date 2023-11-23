@@ -11,6 +11,7 @@ use App\Entity\Tricks;
 use App\Entity\User;
 use App\Form\EditTricksType;
 use App\Form\TricksImageType;
+use App\Form\TricksVideoType;
 use App\Entity\TricksImage;
 use App\Entity\TricksVideo;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -22,12 +23,13 @@ class EditTricksController extends AbstractController
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
-        Security $security
+        Security $security,
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $slug = $request->query->get('slug');
         $tricks = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
+        
         $currentUser = $this->getUser();
         $tricksCreator = $tricks->getUser()->getId();
 
@@ -78,9 +80,10 @@ class EditTricksController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Le trick a été mis à jour avec succès.');
+            return $this->redirectToRoute('home.index');
         } elseif ($currentUser->getId() !== $tricksCreator) {
             $this->addFlash('warning', 'Vous n\'étes pas autorisé à modifier ce tricks.');
-            return $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('home.index');
         }
 
         return $this->render('tricks/editTricks.html.twig', [
@@ -114,12 +117,7 @@ class EditTricksController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'La photo a été supprimée avec succès.');
-        return $this->render('tricks/editTricks.html.twig', [
-            'form' => $form->createView(),
-            'currentUser' => $currentUser,
-            'tricks' => $tricks,
-            'image' => $tricksImage
-        ]);
+        return $this->redirectToRoute('home.index');
     }
 
     #[Route('/update/photos/{id}', name: 'update.photos', methods: ['POST', 'GET'])]
@@ -165,21 +163,73 @@ class EditTricksController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         Security $security,
-        TricksVideo $tricksVideo
+        TricksVideo $video
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $currentUser = $this->getUser();
-        $tricksCreator = $tricksVideo->getTricks()->getUser();
-        
+        $tricksCreator = $video->getTricks()->getUser();
+        $tricks = $video->getTricks();
+        $form = $this->createForm(EditTricksType::class, $tricks);
         if ($tricksCreator !== $currentUser) {
-            $this->addFlash('warning', "Vous n'avez pas l'autorisation de supprimer cette vidéo.");
+            $this->addFlash('warning', "Vous n'avez pas l'autorisation de supprimer cette photo.");
+            return $this->redirectToRoute('security.login');
         }
 
-        $entityManager->remove($tricksVideo);
+        $entityManager->remove($video);
         $entityManager->flush();
 
         $this->addFlash('success', 'La vidéo a été supprimée avec succès.');
         return $this->redirectToRoute('home.index');
     }
+
+    #[Route('/update/videos/{id}', name: 'update.videos', methods: ['POST', 'GET'])]
+    public function updateVideos(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Security $security,
+        TricksVideo $video,
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        
+        $tricks = $video->getTricks();
+        $currentUser = $this->getUser();
+        $tricksCreator = $video->getTricks()->getUser();
+        $videoForm = $this->createForm(TricksVideoType::class, $video);
+
+        $videoForm->handleRequest($request);
+
+        if ($tricksCreator !== $currentUser) {
+            $this->addFlash('warning', "Vous n'avez pas l'autorisation de supprimer cette vidéo.");
+            return $this->redirectToRoute('home.index');
+        }
+
+        
+        if ($videoForm->isSubmitted() && $videoForm->isValid()) {
+            
+            $tricksVideosUrls = $videoForm->get('tricksVideo')->getData();
+        
+            if (!empty($tricksVideosUrls)) {
+                $video->setVideoUrl($tricksVideosUrls);
+            }
+
+            $tricks->setUpdatedAtValue($video);
+            $entityManager->persist($tricks);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La vidéo a été mise à jour avec succès.');
+
+            return $this->redirectToRoute('edit.tricks', ['slug' => $tricks->getSlug()]);
+        }
+
+        $showUpdateVideoForm = true;
+
+        return $this->render('tricks/editTricks.html.twig', [
+            'currentUser' => $currentUser,
+            'videoForm' => $videoForm->createView(),
+            'tricks' => $tricks,
+            'showUpdateVideoForm' => $showUpdateVideoForm
+        ]);
+    }
+
 }
