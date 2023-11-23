@@ -39,7 +39,8 @@ class DetailedTricksController extends AbstractController
         }
 
         // Récupérer les commentaires sans paginer
-        $commentsQuery = $entityManager->getRepository(Comments::class)->findBy(['tricks' => $tricks]);
+        $commentsQuery = $entityManager->getRepository(Comments::class)->findBy(['tricks' => $tricks],
+        ['id' => 'DESC']);
 
         // Paginer les commentaires
         $pagination = $paginator->paginate(

@@ -31,6 +31,9 @@ services:
     App\Entity\Tricks: ~
 
     App\Validator\Constraints\VideoUrlsValidator: ~
+
+    App\Form\TricksImageType:
+        tags: ['form.type']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     

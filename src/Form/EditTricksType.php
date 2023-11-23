@@ -47,13 +47,14 @@ class EditTricksType extends AbstractType
                 'multiple' => true,
                 'label' => 'Ajouter une photo',
                 'label_attr' => [
-                    'id' => 'photoUpdate',
+                    'id' => 'photoUpdateBtn',
                     'class' => 'form-label mt-4'
                 ],
                 'attr' => ['class' => 'form-control'],
                 'required' => false,
                 'mapped' => false
             ])
+            
             ->add('tricksVideo', TextType::class, [
                 'label' => 'Ajouter une (ou plusieurs) vidéo(s)',
                 'label_attr' => [
@@ -97,6 +98,7 @@ class EditTricksType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Tricks::class,
+            'id' => null,
         ]);
     }
 }
