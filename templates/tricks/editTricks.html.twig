@@ -21,9 +21,9 @@
                         <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
                         <div class="position-absolute top-0 end-0 m-3">
                             {% if currentUser is not null and currentUser == tricks.user %}
-                                <a class="btn btn-link" href="#photoUpdate"><i class="bi bi-pencil-fill me-2"></i></a>
                                 {% if tricks.tricksImage|length > 0 %}
                                     {% set firstImage = tricks.tricksImage.first() %}
+                                    <a class="btn btn-link" href="{{ path('update.photos', {'id': firstImage.id}) }}" onclick=""><i class="bi bi-pencil-fill me-2"></i></a>
                                     <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': firstImage.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
                                 {% endif %}
                             {% endif %}
@@ -64,7 +64,7 @@
                                                             <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
                                                             <div class="m-3 d-flex">
                                                                 {% if currentUser is not null and currentUser == tricks.user %}
-                                                                    <a class="btn btn-link" href="#photoUpdate"><i class="bi bi-pencil-fill me-2"></i></a>
+                                                                    <a class="btn btn-link edit-photo" href="{{ path('update.photos', {'id': image.id}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
                                                                     <a class="btn btn-link delete-photo-btn" href="{{ path('delete.photos', {'id': image.id}) }}" onclick="return confirm('Voulez-vous supprimer cette photo ?')"><i class="bi bi-trash-fill"></i></a>
                                                                 {% endif %}
                                                             </div>
@@ -92,6 +92,11 @@
                                 </div>
                         <section class="mb-5 d-flex justify-content-between align-items-center">
                             <div class="card w-100 h-60 shadow border-0 p-5">
+                            {% if photoForm is defined %}
+                                {{ form_start(photoForm) }}
+                                {{ form_widget(photoForm) }}
+                                {{ form_end(photoForm) }}
+                            {% else %}
                                 {{ form_start(form) }}
                                 <div class="form-group">
                                     {{ form_row(form.title) }}
@@ -100,6 +105,7 @@
                                     {{ form_row(form.description) }}
                                 </div>
                                 {{ form_end(form) }}
+                            {% endif %}
                             </div>
                         </section>
                     </article>
@@ -107,4 +113,3 @@
             </div>
         </section>
 {% endblock %}
-

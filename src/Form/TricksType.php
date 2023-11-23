@@ -69,7 +69,7 @@ class TricksType extends AbstractType
                 ],
             ])
             // ->add('tricksVideo', CollectionType::class, [
-            //     'entry_type' => TricksVideoType::class,  // Assurez-vous que l'entrée correspond à TricksVideoType
+            //     'entry_type' => TricksVideoType::class,  
             //     'allow_add' => true,
             //     'allow_delete' => true,
             //     'by_reference' => false,

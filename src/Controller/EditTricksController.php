@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Tricks;
 use App\Entity\User;
 use App\Form\EditTricksType;
+use App\Form\TricksImageType;
 use App\Entity\TricksImage;
 use App\Entity\TricksVideo;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -32,6 +33,7 @@ class EditTricksController extends AbstractController
 
         $form = $this->createForm(EditTricksType::class, $tricks);
         $form->handleRequest($request);
+        $tricksImage = new TricksImage();
 
         if ($currentUser->getId() === $tricksCreator && $form->isSubmitted() && $form->isValid()) {
             $title = $tricks->getTitle();
@@ -50,7 +52,7 @@ class EditTricksController extends AbstractController
                         $fichier
                     );
                 } catch (FileException $e) {
-                    //
+
                 }
 
                 $photo = new TricksImage();
@@ -78,7 +80,7 @@ class EditTricksController extends AbstractController
             $this->addFlash('success', 'Le trick a été mis à jour avec succès.');
         } elseif ($currentUser->getId() !== $tricksCreator) {
             $this->addFlash('warning', 'Vous n\'étes pas autorisé à modifier ce tricks.');
-            return $this->redirectToRoute('home.index');
+            return $this->redirectToRoute('security.login');
         }
 
         return $this->render('tricks/editTricks.html.twig', [
@@ -86,6 +88,7 @@ class EditTricksController extends AbstractController
             'controller_name' => 'EditTricksController',
             'currentUser' => $currentUser,
             'tricks' => $tricks,
+            'image' => $tricksImage
         ]);
     }
        
@@ -94,23 +97,68 @@ class EditTricksController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         Security $security,
-        TricksImage $tricksImage
+        TricksImage $tricksImage,
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        
+
         $currentUser = $this->getUser();
         $tricksCreator = $tricksImage->getTricks()->getUser();
-        
+        $tricks = $tricksImage->getTricks();
+        $form = $this->createForm(EditTricksType::class, $tricks);
         if ($tricksCreator !== $currentUser) {
             $this->addFlash('warning', "Vous n'avez pas l'autorisation de supprimer cette photo.");
+            return $this->redirectToRoute('security.login');
         }
 
         $entityManager->remove($tricksImage);
         $entityManager->flush();
 
         $this->addFlash('success', 'La photo a été supprimée avec succès.');
-        return $this->redirectToRoute('home.index');
+        return $this->render('tricks/editTricks.html.twig', [
+            'form' => $form->createView(),
+            'currentUser' => $currentUser,
+            'tricks' => $tricks,
+            'image' => $tricksImage
+        ]);
     }
+
+    #[Route('/update/photos/{id}', name: 'update.photos', methods: ['POST', 'GET'])]
+    public function updatePhotos(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        Security $security,
+        TricksImage $photo,
+    ): Response {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        
+        $tricks = $photo->getTricks();
+
+        $currentUser = $this->getUser();
+    
+        $photoForm = $this->createForm(TricksImageType::class, $photo);
+
+        $photoForm->handleRequest($request);
+
+        if ($photoForm->isSubmitted() && $photoForm->isValid()) {
+
+            $tricks->setUpdatedAtValue();
+            $entityManager->persist($tricks);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'La photo a été mise à jour avec succès.');
+
+            return $this->redirectToRoute('edit.tricks', ['slug' => $tricks->getSlug()]);
+        }
+        $showUpdatePhotoForm = true;
+
+        return $this->render('tricks/editTricks.html.twig', [
+            'currentUser' => $currentUser,
+            'photoForm' => $photoForm->createView(),
+            'tricks' => $tricks,
+            'showUpdatePhotoForm' => $showUpdatePhotoForm
+        ]);
+    }
+
 
     #[Route('/delete/videos/{id}', name: 'delete.videos')]
     public function deleteVideos(

@@ -19,7 +19,10 @@ class HomeController extends AbstractController
         Request $request
         ): Response {
         $tricksRepository = $entityManager->getRepository(Tricks::class);
-        $data = $tricksRepository->findAll();
+        $data = $tricksRepository->findBy(
+            [],
+            ['id' => 'DESC']
+        );
         $tricks = $paginator->paginate(
             $data,
             $request->query->getInt('page', 1),
