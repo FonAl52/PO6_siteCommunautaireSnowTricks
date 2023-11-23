@@ -33,12 +33,6 @@ class TricksType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'attr' => ['class' => 'form-control'],
-                'constraints' => [
-                    new Length([
-                        'max' => 12,
-                        'maxMessage' => 'Le titre ne peut pas dépasser {{ limit }} caractères.',
-                    ]),
-                ],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
