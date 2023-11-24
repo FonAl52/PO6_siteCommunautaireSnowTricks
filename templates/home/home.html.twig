@@ -29,8 +29,8 @@
             {% endfor %}
             <!-- Blog preview section-->
             <section id="tricks" class="mx-auto px-5 bg-dark py-5">
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5">
-                    {% for trick in tricks %}
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5" id="tricks-container">
+                    {% for trick in tricks|slice(0, 15) %}
                         <div class="col mb-5">
                             <div class="card h-60 shadow border-0">
                                 {% set firstImageDisplayed = false %}
@@ -59,12 +59,52 @@
                                         <!-- Boutons avec icônes (stylo et poubelle) -->
                                         <div class="col d-flex justify-content-end align-items-center">
                                             {% if currentUser is not null and currentUser == trick.user %}
-                                            <div class="figure-card-btn d-flex justify-content-end align-items-center">
-                                                <a class="btn btn-link" href="{{ path('edit.tricks', {slug: trick.slug}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
-                                                <a class="btn btn-link" href="{{ path('delete.tricks', {slug: trick.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
-                                            </div>
+                                                <div class="figure-card-btn d-flex justify-content-end align-items-center">
+                                                    <a class="btn btn-link" href="{{ path('edit.tricks', {slug: trick.slug}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
+                                                    <a class="btn btn-link" href="{{ path('delete.tricks', {slug: trick.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                                </div>
                                             {% endif %}
-                                        </div>    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5 d-none" id="additional-trick">
+                    {% for trick in tricks|slice(15) %}
+                        <div class="col mb-5">
+                            <div class="card h-60 shadow border-0">
+                                {% set firstImageDisplayed = false %}                                    {% if trick.tricksImage|length > 0 %}
+                                    {% for image in trick.tricksImage %}
+                                        {% if not firstImageDisplayed %}
+                                            <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ trick.title }}" class="image-600x350"/>
+                                            {% set firstImageDisplayed = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% else %}
+                                        <img src="../images/tricksImages/pexels-dennis-leinarts-1748597.jpg" alt="{{ trick.title }}" class="image-600x350"/>
+                                    {% endif %}
+                                    <div class="card-body">
+                                        <!-- Titre de la carte -->
+                                        <div class="row">
+                                            <div class="col d-flex justify-content-start flex-wrap align-items-center">
+                                                <div class="figure-card-title">
+                                                    <a class="text-decoration-none link-dark" href="{{ path('detailed.tricks', {slug: trick.slug}) }}">
+                                                        <h8 class="card-title mb-3">
+                                                            {{ trick.title|length > 12 ? trick.title|slice(0, 9) ~ '...' : trick.title }}
+                                                        </h8>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <!-- Boutons avec icônes (stylo et poubelle) -->
+                                            <div class="col d-flex justify-content-end align-items-center">
+                                            {% if currentUser is not null and currentUser == trick.user %}
+                                                <div class="figure-card-btn d-flex justify-content-end align-items-center">
+                                                   <a class="btn btn-link" href="{{ path('edit.tricks', {slug: trick.slug}) }}"><i class="bi bi-pencil-fill me-2"></i></a>                                                        <a class="btn btn-link" href="{{ path('delete.tricks', {slug: trick.slug}) }}" onclick="return confirm('Voulez-vous supprimer définitivement cet article ?')"><i class="bi bi-trash-fill"></i></a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -73,7 +113,7 @@
                 </div>
                 <div class="row gx-5">
                     <div class="navigation d-flex justify-content-center mb-8">
-                        {{ knp_pagination_render(tricks) }}
+                        <button id="load-more-btn" class="btn btn-primary">Voir plus</button>
                     </div>
                 </div>
             </section>
@@ -86,7 +126,21 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var loadMoreButton = document.getElementById('load-more-btn');
 
+            loadMoreButton.addEventListener('click', function () {
+                // Affichez les tricks supplémentaires à chaque clic sur le bouton "Load More"
+                var additionalTricks = document.querySelector('#additional-trick');
+                console.log(additionalTricks);
+                additionalTricks.classList.remove('d-none');
+
+                // Cachez le bouton "Load More" après avoir tout affiché
+                loadMoreButton.classList.add('d-none');
+            });
+        });
+    </script>
 {% endblock %}
 
 
