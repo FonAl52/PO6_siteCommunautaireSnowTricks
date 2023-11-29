@@ -14,12 +14,13 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class DetailedTricksController extends AbstractController
 {
-    #[Route('/detail/tricks', name: 'detailed.tricks')]
+    #[Route('/detail/tricks/{slug}', name: 'detailed.tricks')]
     public function display(
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator,
+        String $slug
         ): Response {
-        $slug = $request->query->get('slug');
         $tricks = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
         $currentUser = $this->getUser();
         
@@ -36,12 +37,17 @@ class DetailedTricksController extends AbstractController
 
             $this->addFlash('success','Votre commentaire à bien été soumis ! ');
         }
-        
+        $comments = $paginator->paginate(
+            $tricks->getSortedComments(),
+            $request->query->getInt('page', 1),
+        );
+       
         return $this->render('tricks/detailedTricks.html.twig', [
             'controller_name' => 'DetailedTricksController',
             'currentUser' => $currentUser,
             'tricks' => $tricks,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'comments' => $comments
         ]);
     }    
 }

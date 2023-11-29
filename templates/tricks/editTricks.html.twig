@@ -53,19 +53,18 @@
                     <!-- Post medias -->
                     <div class="mobile">
                         <div class="row">
-                            <button id="togg1" class="btn btn-secondary btn-lg px-4 me-sm-3 mb-5">See medias</button>
+                            <button id="togg1" class="btn btn-secondary btn-lg px-4 me-sm-3 mb-5">Voir les medias</button>
                         </div>
-                    </div>
-
+                    </div> 
                     <div id="d1" class="desktop">
-                        <div class="d-flex">
-                            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-6 justify-content-around">
+                        <div id="media-container" class="d-flex">
+                            <div  class="row row-cols-1 row-cols-md-2 row-cols-lg-6">
                                 {% if tricks.tricksImage|length > 0 %}
                                     {% for key, image in tricks.tricksImage %}
-                                        {% if key > 0 %} {# Vérifie si ce n'est pas la première image #}
+                                        {% if key > 0 %}
                                             <div class="col mb-5">
                                                 <img src="{{ vich_uploader_asset(image, 'imageFile') }}" alt="{{ tricks.title }}" class="tricks_underHero_image"/>
-                                                <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                                                <!-- Boutons avec icônes (stylo et poubelle) -->
                                                 <div class="m-3 d-flex">
                                                     {% if currentUser is not null and currentUser == tricks.user %}
                                                         <a class="btn btn-link edit-photo" href="{{ path('update.photos', {'id': image.id}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
@@ -81,7 +80,7 @@
                                     {% for video in tricks.tricksVideo %}
                                         <div class="col mb-5">
                                             <iframe class="tricks_underHero_video" src="{{ video.videoUrl }}" frameborder="0" allowfullscreen></iframe>
-                                            <!-- Boutons avec icônes (stylo et poubelle) en haut à droite -->
+                                            <!-- Boutons avec icônes (stylo et poubelle) -->
                                             <div class="m-3 d-flex">
                                                 {% if currentUser is not null and currentUser == tricks.user %}
                                                     <a class="btn btn-link edit-video" href="{{ path('update.videos', {'id': video.id}) }}"><i class="bi bi-pencil-fill me-2"></i></a>
@@ -121,4 +120,35 @@
             </div>
         </div>
     </section>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const button = document.getElementById("togg1");
+    const desktopDiv = document.getElementById("d1");
+
+    button.addEventListener("click", function () {
+        const isActive = desktopDiv.classList.contains("active");
+        if (isActive) {
+            desktopDiv.classList.remove("active");
+        } else {
+            desktopDiv.classList.add("active");
+        }
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+            var loadMoreButton = document.getElementById('load-more-btn');
+
+            loadMoreButton.addEventListener('click', function () {
+                // Affichez les tricks supplémentaires à chaque clic sur le bouton "Load More"
+                var additionalTricks = document.querySelector('#additional-comments');
+                console.log(additionalTricks);
+                additionalTricks.classList.remove('d-none');
+
+                // Cachez le bouton "Load More" après avoir tout affiché
+                loadMoreButton.classList.add('d-none');
+            });
+        });
+</script>
 {% endblock %}

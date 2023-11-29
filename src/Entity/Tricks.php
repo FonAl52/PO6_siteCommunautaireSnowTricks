@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
+use Doctrine\Common\Collections\Criteria;
 
 #[UniqueEntity('title')]
 #[Vich\Uploadable]
@@ -251,6 +251,13 @@ class Tricks
         }
 
         return $this;
+    }
+
+    public function getSortedComments(): Collection
+    {
+        $criteria = Criteria::create()->orderBy([ 'id' => Criteria::DESC ]);
+
+        return $this->comments->matching($criteria);
     }
 
     public function removeComment(Comment $comment): static
