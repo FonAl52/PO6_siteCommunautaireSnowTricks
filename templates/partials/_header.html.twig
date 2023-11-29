@@ -1,6 +1,7 @@
 
 {% block header %}
     <!-- Navigation-->
+    <div class=" desktop">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container px-5">
             <a class="navbar-brand" href="{{ path('home.index') }}">🏂 Snow Tricks</a>
@@ -28,4 +29,41 @@
             </div>
         </div>
     </nav>
+    </div>
+    <div class="mobile">
+    <nav class="navbar fixed-bottom navbar-dark bg-dark">
+        <div class="container">
+            <!-- Icône d'accueil -->
+            <a class="navbar-brand" href="{{ path('home.index') }}">
+                <i class="bi bi-house-door"></i>
+            </a>
+            {% if app.user %}
+                    {# L'utilisateur est connecté #}
+                    <!-- Icône de création de tricks -->
+                    <a class="navbar-brand" href="{{ path('create.tricks') }}">
+                        <i class="bi bi-bookmark-fill"></i>
+                    </a>
+                    <!-- Icône de profile -->
+                    <a class="navbar-brand" href="{{ path('user.edit', {id : app.user.id}) }}">
+                        <i class="bi bi-person-circle"></i>
+                    </a>   
+                    <!-- Icône de déconnexion -->
+                    <a class="navbar-brand" href="{{ path('security.logout') }}">
+                        <i class="bi bi-box-arrow-left"></i>
+                    </a>   
+                        
+            {% else %}
+                    {# L'utilisateur n'est pas connecté #}
+                    <!-- Icône d'inscription -->
+                    <a class="navbar-brand" href="{{ path('security.registration') }}">
+                        <i class="bi bi-journal-check"></i>
+                    </a>     
+                    <!-- Icône de connexion -->
+                    <a class="navbar-brand" href="{{ path('security.login') }}">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                    </a>
+            {% endif %}
+        </div>
+    </nav>
+    </div>
 {% endblock %}
