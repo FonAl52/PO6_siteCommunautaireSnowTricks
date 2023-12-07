@@ -12,28 +12,40 @@ use App\Entity\Comments;
 use Faker\Generator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
-use Symfony\Component\HttpFoundation\File\File;
 use Cocur\Slugify\Slugify;
 
 class AppFixtures extends Fixture
-{  
+{
     /**
      * @var Generator
      */
+
     private Generator $faker;
+
     private UploaderHelper $uploaderHelper;
 
+    /**
+     * Construct
+     *
+     * @param UploaderHelper $uploaderHelper
+     */
     public function __construct(UploaderHelper $uploaderHelper)
     {
         $this->faker = Factory::create('fr_FR');
         $this->uploaderHelper = $uploaderHelper;
     }
+    //end __construct()
 
+
+    /**
+     * Fixtures creation
+     *
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager): void
     {
-        
         // Users
         $users = [];
 
@@ -79,26 +91,26 @@ class AppFixtures extends Fixture
         $mute->setTitle('Mute')
             ->setDescription('Saisie de la carre frontside de la planche entre les deux pieds avec la main avant.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Mute');
-    
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Mute');
+
         $mute->setSlug($slug);
         $tricksImage = new TricksImage();
         $tricksImage->setImageName('mute/FeatCollection2-SnowShop_SP.webp');
         $mute->addTricksImage($tricksImage);
-        
+
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('mute/mute-air.webp');
         $mute->addTricksImage($tricksImage2);
-        
+
         $tricksImage3 = new TricksImage();
         $tricksImage3->setImageName('mute/mute-air (1).webp');
         $mute->addTricksImage($tricksImage3);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/k6aOWf0LDcQ?si=AlQGFif-J1gfCXt_');
- 
-        $mute->addTricksVideo($video);  
+
+        $mute->addTricksVideo($video);
         $manager->persist($mute);
         $tricks[] = $mute;
 
@@ -107,22 +119,22 @@ class AppFixtures extends Fixture
         $noseGrab->setTitle('Nose grab')
             ->setDescription('Saisie de la partie avant de la planche, avec la main avant.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Nose grab');
-    
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Nose grab');
+
         $noseGrab->setSlug($slug);
         $tricksImage = new TricksImage();
         $tricksImage->setImageName('nose grab/nose-grab-snowboard (1).webp');
         $noseGrab->addTricksImage($tricksImage);
-        
+
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('nose grab/nose-grab-snowboarding.webp');
         $noseGrab->addTricksImage($tricksImage2);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/nIS14rVlbyQ?si=fEu9nhpT4sN8Mi71');
- 
-        $noseGrab->addTricksVideo($video);  
+
+        $noseGrab->addTricksVideo($video);
         $manager->persist($noseGrab);
 
         $tricks[] = $noseGrab;
@@ -132,22 +144,22 @@ class AppFixtures extends Fixture
         $sad->setTitle('Sad')
             ->setDescription('Saisie de la carre backside de la planche, entre les deux pieds, avec la main avant.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Sad');
-    
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Sad');
+
         $sad->setSlug($slug);
         $tricksImage = new TricksImage();
         $tricksImage->setImageName('sad/freestyler1.webp');
         $sad->addTricksImage($tricksImage);
-        
+
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('sad/indy-grab-snowboarding.webp');
         $sad->addTricksImage($tricksImage2);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/0kDG0PZM36w?si=pm5ijO7m1k0RUqE');
- 
-        $sad->addTricksVideo($video);  
+
+        $sad->addTricksVideo($video);
         $manager->persist($sad);
 
         $tricks[] = $sad;
@@ -157,14 +169,14 @@ class AppFixtures extends Fixture
         $indy->setTitle('Indy')
             ->setDescription('Saisie de la carre frontside de la planche, entre les deux pieds, avec la main arrière.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Indy');
-    
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Indy');
+
         $indy->setSlug($slug);
         $tricksImage = new TricksImage();
         $tricksImage->setImageName('indy/chicken-salad-grab-snowboard.webp');
         $indy->addTricksImage($tricksImage);
-        
+
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('indy/indy-grab-snowboard.webp');
         $indy->addTricksImage($tricksImage2);
@@ -172,11 +184,11 @@ class AppFixtures extends Fixture
         $tricksImage3 = new TricksImage();
         $tricksImage3->setImageName('indy/indy-grab.webp');
         $indy->addTricksImage($tricksImage3);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/6yA3XqjTh_w?si=3zWr-qHXpP_t2iNY');
- 
-        $indy->addTricksVideo($video);  
+
+        $indy->addTricksVideo($video);
         $manager->persist($indy);
 
         $tricks[] = $indy;
@@ -186,8 +198,8 @@ class AppFixtures extends Fixture
         $stalefish->setTitle('Stalefish')
             ->setDescription('Saisie de la carre backside de la planche entre les deux pieds avec la main arrière.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Stalefish');
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Stalefish');
 
         $stalefish->setSlug($slug);
         $tricksImage = new TricksImage();
@@ -201,11 +213,11 @@ class AppFixtures extends Fixture
         $tricksImage3 = new TricksImage();
         $tricksImage3->setImageName('stalefish/stalefish-grab.webp');
         $stalefish->addTricksImage($tricksImage3);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/xXCCGYqAWqI?si=iTiAVvLAQPreai4a');
 
-        $stalefish->addTricksVideo($video);  
+        $stalefish->addTricksVideo($video);
         $manager->persist($stalefish);
 
         $tricks[] = $stalefish;
@@ -215,8 +227,8 @@ class AppFixtures extends Fixture
         $tailGrab->setTitle('Tail grab')
             ->setDescription('Saisie de la partie arrière de la planche, avec la main arrière.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Tail grab');
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Tail grab');
 
         $tailGrab->setSlug($slug);
         $tricksImage = new TricksImage();
@@ -226,11 +238,11 @@ class AppFixtures extends Fixture
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('tail grab/6769020405_e6ddfb7bf5_b.jpg');
         $tailGrab->addTricksImage($tricksImage2);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/YAElDqyD-3I?si=k7lXk1MgoMRcBJ4O');
 
-        $tailGrab->addTricksVideo($video);  
+        $tailGrab->addTricksVideo($video);
         $manager->persist($tailGrab);
 
         $tricks[] = $tailGrab;
@@ -240,8 +252,8 @@ class AppFixtures extends Fixture
         $japanAir->setTitle('Japan air')
             ->setDescription('Saisie de l\'avant de la planche, avec la main avant, du côté de la carre frontside.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Japan air');
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Japan air');
 
         $japanAir->setSlug($slug);
         $tricksImage = new TricksImage();
@@ -251,22 +263,22 @@ class AppFixtures extends Fixture
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('japan air/467139965-sage-kotsenburg-competes-in-the-mens-snowboard_1.jpg.CROP.promo-mediumlarge.webp');
         $japanAir->addTricksImage($tricksImage2);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/X_WhGuIY9Ak?si=ART60948of2sirYA');
 
-        $japanAir->addTricksVideo($video);  
+        $japanAir->addTricksVideo($video);
         $manager->persist($japanAir);
 
         $tricks[] = $japanAir;
-        
+
         // Seat Belt
         $seatBelt = new Tricks();
         $seatBelt->setTitle('Seat Belt')
             ->setDescription('Saisie du carre frontside à l\'arrière avec la main avant.')
             ->setUser($users[array_rand($users)]);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Seat Belt');
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Seat Belt');
 
         $seatBelt->setSlug($slug);
         $tricksImage = new TricksImage();
@@ -276,11 +288,11 @@ class AppFixtures extends Fixture
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('seat Belt/Seatbelt.jpg');
         $seatBelt->addTricksImage($tricksImage2);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/4vGEOYNGi_c?si=dKJTmacmrnSHXiNh');
 
-        $seatBelt->addTricksVideo($video);  
+        $seatBelt->addTricksVideo($video);
         $manager->persist($seatBelt);
 
         $tricks[] = $seatBelt;
@@ -290,8 +302,8 @@ class AppFixtures extends Fixture
         $truckDriver->setTitle('Truck driver')
             ->setDescription('Saisie du carre frontside à l\'arrière avec la main avant.')
             ->setUser($admin);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('Truck driver');
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('Truck driver');
 
         $truckDriver->setSlug($slug);
         $tricksImage = new TricksImage();
@@ -301,11 +313,11 @@ class AppFixtures extends Fixture
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('truck driver/Truckdriver.jpg');
         $truckDriver->addTricksImage($tricksImage2);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/4vGEOYNGi_c?si=dKJTmacmrnSHXiNh');
 
-        $truckDriver->addTricksVideo($video);  
+        $truckDriver->addTricksVideo($video);
         $manager->persist($truckDriver);
 
         $tricks[] = $truckDriver;
@@ -315,8 +327,8 @@ class AppFixtures extends Fixture
         $backside360->setTitle('360')
             ->setDescription('On désigne par le mot « rotation » uniquement des rotations horizontales, les rotations verticales sont des flips. Le principe est d\'effectuer une rotation horizontale pendant le saut, puis d\'attérir en position switch ou normal. La nomenclature se base sur le nombre de degrés de rotation effectués : ici 360, trois six pour un tour complet.')
             ->setUser($admin);
-            $slugify = new Slugify();
-            $slug = $slugify->slugify('360');
+        $slugify = new Slugify();
+        $slug = $slugify->slugify('360');
 
         $backside360->setSlug($slug);
         $tricksImage = new TricksImage();
@@ -326,11 +338,11 @@ class AppFixtures extends Fixture
         $tricksImage2 = new TricksImage();
         $tricksImage2->setImageName('360/how-to-frontside-360-snowboard-800.jpg');
         $backside360->addTricksImage($tricksImage2);
-            
+
         $video = new TricksVideo();
         $video->setVideoUrl('https://www.youtube.com/embed/4vGEOYNGi_c?si=dKJTmacmrnSHXiNh');
 
-        $backside360->addTricksVideo($video);  
+        $backside360->addTricksVideo($video);
         $manager->persist($backside360);
 
         $tricks[] = $backside360;
@@ -354,5 +366,4 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    
 }

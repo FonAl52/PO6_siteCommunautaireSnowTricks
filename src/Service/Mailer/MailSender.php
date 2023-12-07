@@ -6,9 +6,16 @@ use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
 class MailSender extends AbstractController
 {
+    /**
+     * Controller to send email
+     *
+     * @param data $form
+     * @param string $subject
+     * @param string $body
+     * @return void
+     */
     public function sendEmail($form, $subject, $body)
     {
         //generate email
@@ -24,18 +31,18 @@ class MailSender extends AbstractController
             $mail->Password = 'kkmq ojuq hjpk gvdh';                               //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
             $mail->Port = 465;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-        
+
             //Recipients
             $mail->setFrom('vod52m@gmail.com', 'Snow Tricks 🏂');
             $userEmail = $form->get('email')->getData();
             $mail->addAddress($userEmail);     //Add a recipient
-        
+
             //Content
             $mail->CharSet = 'UTF-8';
             $mail->isHTML(true);                                  //Set email format to HTML
             $mail->Subject = $subject;
             $mail->Body = $body;
-            
+
             $mail->send();
             echo 'Message has been sent';
         } catch (Exception $e) {

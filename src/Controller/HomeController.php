@@ -10,10 +10,18 @@ use App\Entity\Tricks;
 
 class HomeController extends AbstractController
 {
+    /**
+     * This controller display the Home page
+     *
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/', name: 'home.index', methods: ['GET'])]
+
+    
     public function index(
         EntityManagerInterface $entityManager
-        ): Response {
+    ): Response {
         $tricksRepository = $entityManager->getRepository(Tricks::class);
         $tricks = $tricksRepository->findBy([], ['createdAt' => 'DESC']);
         $currentUser = $this->getUser();
@@ -23,5 +31,5 @@ class HomeController extends AbstractController
             'currentUser' => $currentUser,
             'tricks' => $tricks,
         ]);
-    }    
+    }
 }
