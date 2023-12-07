@@ -13,6 +13,13 @@ use App\Entity\Comments;
 
 class CommentsType extends AbstractType
 {
+    /**
+     * Build formular to post a comment
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -31,12 +38,20 @@ class CommentsType extends AbstractType
                 ]
             ]);
     }
+    //end buildForm()
 
+    /**
+     * Options validation configuration for Comments class
+     *
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Comments::class,
         ]);
     }
+
 }
 

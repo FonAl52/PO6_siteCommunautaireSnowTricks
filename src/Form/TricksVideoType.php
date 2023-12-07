@@ -7,11 +7,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use App\Validator\Constraints\VideoUrls;
 class TricksVideoType extends AbstractType
 {
+    /**
+     * Build formular for tricksVideo update
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -34,11 +40,19 @@ class TricksVideoType extends AbstractType
             ]
         ]);
     }
+    //end buildForm()
 
+    /**
+     * Options validation configuration for TricksVideo class
+     *
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => TricksVideo::class,
         ]);
     }
+
 }

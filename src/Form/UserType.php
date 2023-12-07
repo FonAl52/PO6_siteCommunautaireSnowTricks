@@ -15,6 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class UserType extends AbstractType
 {
+    /**
+     * Build formular to update user's profile
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -78,11 +85,19 @@ class UserType extends AbstractType
                 ]
             ]);
     }
+    //end buildForm()
 
+    /**
+     * Options validation configuration for User class
+     *
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
     }
+    
 }

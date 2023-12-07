@@ -14,36 +14,62 @@ class TricksImage
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'tricksImage')]
     #[ORM\JoinColumn(nullable: true)]
+
     private ?Tricks $tricks = null;
 
     #[Vich\UploadableField(mapping: 'tricks_images', fileNameProperty: 'imageName')]
+
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
+
     private ?string $imageName = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+
     private \DateTimeImmutable $updatedAt;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->updatedAt = new \DateTimeImmutable();
+
+        //end __construct()
     }
 
+   /**
+    * Get tricks Image id
+    *
+    * @return integer|null
+    */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Get tricks Image tricks
+     *
+     * @return Tricks|null
+     */
     public function getTricks(): ?Tricks
     {
         return $this->tricks;
     }
 
+    /**
+     * Get tricks Image tricks
+     *
+     * @param Tricks|null $tricks
+     * @return static
+     */
     public function setTricks(?Tricks $tricks): static
     {
         $this->tricks = $tricks;
@@ -71,31 +97,57 @@ class TricksImage
         }
     }
 
+    /**
+     * Get tricks Image file
+     *
+     * @return File|null
+     */
     public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
+    /**
+     * Set tricks Image name
+     *
+     * @param string|null $imageName
+     * @return void
+     */
     public function setImageName(?string $imageName): void
     {
         $this->imageName = $imageName;
     }
 
+    /**
+     * Get tricks Image name
+     *
+     * @return string|null
+     */
     public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
+    /**
+     * Get tricks Image updatedAt
+     *
+     * @return \DateTimeImmutable|null
+     */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
+    /**
+     * Set tricks Image updatedAt
+     *
+     * @param \DateTimeImmutable $updatedAt
+     * @return self
+     */
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
-
 }
