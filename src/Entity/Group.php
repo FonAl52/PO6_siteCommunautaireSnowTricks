@@ -14,19 +14,34 @@ class Group
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Tricks::class, mappedBy: 'id_group')]
+
     private Collection $tricks;
 
+
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
+
+        //end __construct()
     }
-    
+
+
+    /**
+     * Get Id
+     *
+     * @return integer|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +60,8 @@ class Group
     }
 
     /**
+     * get Tricks
+     * 
      * @return Collection<int, Tricks>
      */
     public function getTricks(): Collection
@@ -52,6 +69,12 @@ class Group
         return $this->tricks;
     }
 
+    /**
+     * add Tricks
+     *
+     * @param Tricks $trick
+     * @return static
+     */
     public function addTrick(Tricks $trick): static
     {
         if (!$this->tricks->contains($trick)) {
@@ -62,6 +85,12 @@ class Group
         return $this;
     }
 
+    /**
+     * remove tricks
+     *
+     * @param Tricks $trick
+     * @return static
+     */
     public function removeTrick(Tricks $trick): static
     {
         if ($this->tricks->removeElement($trick)) {

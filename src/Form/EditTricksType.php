@@ -20,6 +20,13 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class EditTricksType extends AbstractType
 {
+    /**
+     * Build formular for tricks update
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -87,7 +94,14 @@ class EditTricksType extends AbstractType
                 ]
             ]);
     }
+    //end buildForm()
 
+    /**
+     * Options validation configuration for Tricks class
+     *
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -95,4 +109,5 @@ class EditTricksType extends AbstractType
             'id' => null,
         ]);
     }
+
 }

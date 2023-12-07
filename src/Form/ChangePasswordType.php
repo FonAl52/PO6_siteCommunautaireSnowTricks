@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
 class ChangePasswordType extends AbstractType
 {
-    
     /**
      * Build formular to change password
      *
@@ -19,10 +18,9 @@ class ChangePasswordType extends AbstractType
      * @param array $options
      * @return void
      */
-    public function buildForm(
-        FormBuilderInterface $builder,
-        array $options
-    ): void {
+
+
+    public function buildForm( FormBuilderInterface $builder,array $options ): void {
         $builder
             ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -50,4 +48,6 @@ class ChangePasswordType extends AbstractType
                 'label' => 'Changer mon mot de passe'
             ]);
     }
+    //end buildForm()
+    
 }

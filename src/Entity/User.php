@@ -23,31 +23,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank()]
     #[Assert\Length(min: 2, max: 50)]
+
     private ?string $last_name = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank()]
     #[Assert\Length(min: 2, max: 50)]
+
     private ?string $first_name = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\Email()]
     #[Assert\Length(min: 2, max: 180)]
+
     private ?string $email = null;
 
     #[ORM\Column]
     #[Assert\NotBlank()]
+
     private array $roles = [];
 
     #[ORM\Column(length: 255, nullable: true)]
+
     private ?string $resetToken;
 
     #[ORM\Column(type: 'boolean')]
+
     private $isVerified = false;
 
     /**
@@ -58,36 +65,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     #[Assert\NotBlank()]
+
     private ?string $password = 'password';
 
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]
+
     private \DateTimeImmutable $createdAt;
 
     #[Vich\UploadableField(mapping: 'user_images', fileNameProperty: 'imageName')]
+
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
+
     private ?string $imageName = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+
     private \DateTimeImmutable $updatedAt;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Tricks::class, orphanRemoval: true)]
+
     private Collection $tricks;
 
     #[ORM\OneToMany(mappedBy: 'author', targetEntity: Comments::class, orphanRemoval: true)]
+
     private Collection $comments;
 
+    /**
+     * Construct
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
-        // $this->resetToken = 1;
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
-    }
 
+        //end __construct()
+    }
+    
+    /**
+     * Sleep
+     *
+     * @return array
+     */
     public function __sleep()
     {
         return [
@@ -102,16 +125,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         ];
     }
 
+    /**
+     * Get user id
+     *
+     * @return integer|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Get user last name
+     *
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->last_name;
     }
 
+    /**
+     * Set user last name
+     *
+     * @param string $last_name
+     * @return static
+     */
     public function setLastName(string $last_name): static
     {
         $this->last_name = $last_name;
@@ -119,11 +158,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Get user first name
+     *
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->first_name;
     }
 
+    /**
+     * Set user first name
+     *
+     * @param string $first_name
+     * @return static
+     */
     public function setFirstName(string $first_name): static
     {
         $this->first_name = $first_name;
@@ -131,11 +181,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Get user email
+     *
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * Set user email
+     *
+     * @param string $email
+     * @return static
+     */
     public function setEmail(string $email): static
     {
         $this->email = $email;
@@ -165,6 +226,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * Set user roles
+     *
+     * @param array $roles
+     * @return static
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
@@ -172,11 +239,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Get user reset token
+     *
+     * @return string|null
+     */
     public function getResetToken(): ?string
     {   
         return $this->resetToken;
     }
 
+    /**
+     * Set user reset token
+     *
+     * @param string|null $resetToken
+     * @return self
+     */
     public function setResetToken(?string $resetToken): self
     {
         $this->resetToken = $resetToken;
@@ -212,6 +290,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
+    /**
+     * Set user password
+     *
+     * @param string $password
+     * @return static
+     */
     public function setPassword(string $password): static
     {
         $this->password = $password;
@@ -228,11 +312,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    /**
+     * Get user createdAt
+     *
+     * @return \DateTimeImmutable|null
+     */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
 
+    /**
+     * Set user createdAt
+     *
+     * @param \DateTimeImmutable $createdAt
+     * @return static
+     */
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
@@ -261,26 +356,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
     }
 
+    /**
+     * Get user image profile file
+     *
+     * @return File|null
+     */
     public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
+    /**
+     * Set user image profile name
+     *
+     * @param string|null $imageName
+     * @return void
+     */
     public function setImageName(?string $imageName): void
     {
         $this->imageName = $imageName;
     }
 
+    /**
+     * Get user image profile name
+     */
     public function getImageName(): ?string
     {
         return $this->imageName;
     }
 
+    /**
+     * Get user updatedAt
+     *
+     * @return \DateTimeImmutable|null
+     */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
     }
 
+    /**
+     * Set user updatedAt
+     *
+     * @param \DateTimeImmutable $updatedAt
+     * @return self
+     */
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
@@ -296,6 +416,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->tricks;
     }
 
+    /**
+     * add tricks related to user
+     *
+     * @param tricks $trick
+     * @return static
+     */
     public function addTrick(tricks $trick): static
     {
         if (!$this->tricks->contains($trick)) {
@@ -306,6 +432,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * remove tricks related to user
+     *
+     * @param tricks $trick
+     * @return static
+     */
     public function removeTrick(tricks $trick): static
     {
         if ($this->tricks->removeElement($trick)) {
@@ -326,7 +458,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->comments;
     }
 
-    public function addComment(Comment $comment): static
+    /**
+     * add comments related to user
+     *
+     * @param Comments $comment
+     * @return static
+     */
+    public function addComment(Comments $comment): static
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
@@ -336,7 +474,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeComment(Comment $comment): static
+    /**
+     * remove comments related to user
+     *
+     * @param Comments $comment
+     * @return static
+     */
+    public function removeComment(Comments $comment): static
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
@@ -348,11 +492,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * get user status
+     *
+     * @return boolean|null
+     */
     public function isVerified(): ?bool
     {
         return $this->isVerified;
     }
 
+    /**
+     * set user status
+     *
+     * @param boolean $isVerified
+     * @return static
+     */
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
@@ -360,6 +515,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Get user full name as string
+     *
+     * @return string
+     */
     public function __toString()
     {
         return $this->first_name . ' ' . $this->last_name;

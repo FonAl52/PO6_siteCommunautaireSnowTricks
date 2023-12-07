@@ -17,6 +17,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RegistrationType extends AbstractType
 {
+    /**
+     * Build formular for registration
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -97,11 +104,19 @@ class RegistrationType extends AbstractType
             ]);
         ;
     }
+    //end buildForm()
 
+    /**
+     * Options validation configuration for User class
+     *
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
     }
+
 }

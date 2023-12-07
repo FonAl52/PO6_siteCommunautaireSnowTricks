@@ -36,16 +36,16 @@ class Comments
 
     private ?\DateTimeImmutable $createdAt = null;
 
+
     /**
      * Construct
      */
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        //end __construct()
     }
-    //end __construct()
 
-    
     /**
      * Get Comment id
      *
