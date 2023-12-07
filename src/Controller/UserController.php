@@ -3,23 +3,24 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
+use PHPMailer\PHPMailer\SMTP;
 use App\Form\UserPasswordType;
 use App\Form\ChangePasswordType;
-use App\Form\UserType;
+use App\Repository\UserRepository;
+use App\Service\Mailer\MailSender;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
-use App\Repository\UserRepository;
-use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 
 
@@ -91,7 +92,7 @@ class UserController extends AbstractController
         UserRepository $userRepository,
         EntityManagerInterface $manager,
         TokenGeneratorInterface $tokenGeneratorInterface,
-        
+        MailSender $mailSender
     ): Response {
         $form = $this->createForm(UserPasswordType::class);
 
@@ -111,36 +112,10 @@ class UserController extends AbstractController
                 //generate reinitialisation link
                 $url = $this->generateUrl('change.password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
 
+                $subject='Snow Tricks 🏂 - Réinitialisation de mot de passe';
+                $body='Voici votre <a href="' . $url . '">lien de réinitialisation</a>.';
+                $mailSender->sendEmail($form, $subject, $body);
                 //generate email
-                $mail = new PHPMailer(true);
-
-                try {
-                    //Server settings
-                    // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                    $mail->isSMTP();                                            //Send using SMTP
-                    $mail->Host = 'smtp.gmail.com';                     //Set the SMTP server to send through
-                    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                    $mail->Username = 'vod52m@gmail.com';                    //SMTP username
-                    $mail->Password = 'kkmq ojuq hjpk gvdh';                               //SMTP password
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-                    $mail->Port = 465;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-                
-                    //Recipients
-                    $mail->setFrom('vod52m@gmail.com', 'Snow Tricks 🏂');
-                    $userEmail = $form->get('email')->getData();
-                    $mail->addAddress($userEmail);     //Add a recipient
-                
-                    //Content
-                    $mail->CharSet = 'UTF-8';
-                    $mail->isHTML(true);                                  //Set email format to HTML
-                    $mail->Subject = 'Snow Tricks 🏂 - Réinitialisation de mot de passe';
-                    $mail->Body = 'Voici votre <a href="' . $url . '">lien de réinitialisation</a>.';
-                    
-                    $mail->send();
-                    echo 'Message has been sent';
-                } catch (Exception $e) {
-                    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                }
                 $this->addFlash(
                     'success',
                     'Un mail de réinitialisation vous as été envoyer.'
@@ -188,6 +163,7 @@ class UserController extends AbstractController
                 $user->setPlainPassword(
                     $form->getData()['newPassword']
                 );
+                $user->setResetToken(NULL);
     
                 $this->addFlash(
                     'success',
@@ -210,5 +186,44 @@ class UserController extends AbstractController
         return $this->redirectToRoute('security.login');
     }
 
+    /**
+     * This controller allow us to edit user's password
+     *
+     * @param string $token
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+    #[Route('/verification-mail/{token}', 'validate.email', methods: ['GET', 'POST'])]
+    public function verifyMail(
+        string $token,
+        UserRepository $userRepository,
+        EntityManagerInterface $manager,
+    ): Response {
+        $user = $userRepository->findOneByResetToken($token);
+
+        if($user){
+            $user->setIsVerified(1);
+            $user->setResetToken(NULL);
+            
+            $manager->persist($user);
+            $manager->flush();
+            
+            $this->addFlash(
+                'success',
+                'Votre compte est maintenant validé.'
+            );
+            return $this->redirectToRoute('security.login');      
+        }
+        $this->addFlash(
+            'warning',
+            'Jeton invalide.'
+        );
+        return $this->redirectToRoute('security.login');
+    }
+
 }
+
+
 

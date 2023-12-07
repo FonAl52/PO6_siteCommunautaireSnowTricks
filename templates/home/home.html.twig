@@ -30,7 +30,7 @@
             <!-- Blog preview section-->
             <section id="tricks" class="mx-auto px-5 bg-dark py-5">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5" id="tricks-container">
-                    {% for trick in tricks|slice(0, 15) %}
+                    {% for trick in tricks|slice(0, 10) %}
                         <div class="col mb-5">
                             <div class="card h-60 shadow border-0">
                                 {% set firstImageDisplayed = false %}
@@ -72,7 +72,7 @@
                     {% endfor %}
                 </div>
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5 d-none" id="additional-trick">
-                    {% for trick in tricks|slice(15) %}
+                    {% for trick in tricks|slice(10) %}
                         <div class="col mb-5">
                             <div class="card h-60 shadow border-0">
                                 {% set firstImageDisplayed = false %}                                    {% if trick.tricksImage|length > 0 %}
@@ -111,11 +111,13 @@
                         </div>
                     {% endfor %}
                 </div>
+                {% if tricks|length > 10 %}
                 <div class="row gx-5">
                     <div class="navigation d-flex justify-content-center mb-8">
                         <button id="load-more-btn" class="btn btn-primary">Voir plus</button>
                     </div>
                 </div>
+                {% endif %}
             </section>
             <section id="top_home" class="section">
                 <div class="arrow-button_up position-relative m-3">

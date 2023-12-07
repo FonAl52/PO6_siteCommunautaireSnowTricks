@@ -42,7 +42,8 @@ class AppFixtures extends Fixture
             ->setFirstName('admin')
             ->SetEmail('admin@snowtricks.fr')
             ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
-            ->setPlainPassword('password');
+            ->setPlainPassword('password')
+            ->setIsVerified(1);
 
         $users[] = $admin;
         $manager->persist($admin);
@@ -53,7 +54,8 @@ class AppFixtures extends Fixture
                 ->setFirstName($this->faker->firstName())
                 ->setEmail($this->faker->email())
                 ->setRoles(['ROLE_USER'])
-                ->setPlainPassword('password');
+                ->setPlainPassword('password')
+                ->setIsVerified(1);
 
             $users[] = $user;
             $manager->persist($user);

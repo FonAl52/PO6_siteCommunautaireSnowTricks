@@ -17,7 +17,7 @@ class HomeController extends AbstractController
         $tricksRepository = $entityManager->getRepository(Tricks::class);
         $tricks = $tricksRepository->findBy([], ['createdAt' => 'DESC']);
         $currentUser = $this->getUser();
-    
+
         return $this->render('home/home.html.twig', [
             'controller_name' => 'HomeController',
             'currentUser' => $currentUser,
