@@ -2,34 +2,41 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Tricks;
-use App\Entity\User;
+use Cocur\Slugify\Slugify;
+use App\Entity\TricksImage;
+use App\Entity\TricksVideo;
 use App\Form\EditTricksType;
 use App\Form\TricksImageType;
 use App\Form\TricksVideoType;
-use App\Entity\TricksImage;
-use App\Entity\TricksVideo;
-use Symfony\Bundle\SecurityBundle\Security;
-use Cocur\Slugify\Slugify;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class EditTricksController extends AbstractController
 {
+    /**
+     * This controller allow us to edit a tricks
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/edit/tricks', name: 'edit.tricks')]
+
+    
     public function edit(
         Request $request,
         EntityManagerInterface $entityManager,
-        Security $security,
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
 
         $slug = $request->query->get('slug');
         $tricks = $entityManager->getRepository(Tricks::class)->findOneBy(['slug' => $slug]);
-        
+
         $currentUser = $this->getUser();
         $tricksCreator = $tricks->getUser()->getId();
 
@@ -54,7 +61,6 @@ class EditTricksController extends AbstractController
                         $fichier
                     );
                 } catch (FileException $e) {
-
                 }
 
                 $photo = new TricksImage();
@@ -94,12 +100,19 @@ class EditTricksController extends AbstractController
             'image' => $tricksImage
         ]);
     }
-       
+    
+    /**
+     * This controller allow us to delete tricks photos
+     *
+     * @param EntityManagerInterface $entityManager
+     * @param TricksImage $tricksImage
+     * @return Response
+     */
     #[Route('/delete/photos/{id}', name: 'delete.photos')]
+
+
     public function deletePhotos(
-        Request $request,
         EntityManagerInterface $entityManager,
-        Security $security,
         TricksImage $tricksImage,
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -120,19 +133,28 @@ class EditTricksController extends AbstractController
         return $this->redirectToRoute('home.index');
     }
 
+    /**
+     * This controller allow us to update tricks photos
+     *
+     * @param Request $request,
+     * @param EntityManagerInterface $entityManager
+     * @param TricksImage $photo
+     * @return Response
+     */
     #[Route('/update/photos/{id}', name: 'update.photos', methods: ['POST', 'GET'])]
+
+
     public function updatePhotos(
         Request $request,
         EntityManagerInterface $entityManager,
-        Security $security,
         TricksImage $photo,
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        
+
         $tricks = $photo->getTricks();
 
         $currentUser = $this->getUser();
-    
+
         $photoForm = $this->createForm(TricksImageType::class, $photo);
 
         $photoForm->handleRequest($request);
@@ -157,12 +179,18 @@ class EditTricksController extends AbstractController
         ]);
     }
 
-
+    /**
+     * This controller allow us to delete tricks video
+     *
+     * @param EntityManagerInterface $entityManager
+     * @param TricksVideo $video
+     * @return Response
+     */
     #[Route('/delete/videos/{id}', name: 'delete.videos')]
+
+
     public function deleteVideos(
-        Request $request,
         EntityManagerInterface $entityManager,
-        Security $security,
         TricksVideo $video
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
@@ -183,15 +211,24 @@ class EditTricksController extends AbstractController
         return $this->redirectToRoute('home.index');
     }
 
+    /**
+     * This controller allow us to update tricks video
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param TricksVideo $video
+     * @return Response
+     */
     #[Route('/update/videos/{id}', name: 'update.videos', methods: ['POST', 'GET'])]
+
+
     public function updateVideos(
         Request $request,
         EntityManagerInterface $entityManager,
-        Security $security,
         TricksVideo $video,
     ): Response {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        
+
         $tricks = $video->getTricks();
         $currentUser = $this->getUser();
         $tricksCreator = $video->getTricks()->getUser();
@@ -204,11 +241,11 @@ class EditTricksController extends AbstractController
             return $this->redirectToRoute('home.index');
         }
 
-        
+
         if ($videoForm->isSubmitted() && $videoForm->isValid()) {
-            
+
             $tricksVideosUrls = $videoForm->get('tricksVideo')->getData();
-        
+
             if (!empty($tricksVideosUrls)) {
                 $video->setVideoUrl($tricksVideosUrls);
             }
@@ -231,5 +268,4 @@ class EditTricksController extends AbstractController
             'showUpdateVideoForm' => $showUpdateVideoForm
         ]);
     }
-
 }
