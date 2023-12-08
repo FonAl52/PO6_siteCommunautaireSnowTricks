@@ -8,18 +8,28 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class VideoUrlsValidator extends ConstraintValidator
 {
-    
     /**
-     * Controller to validate video url submission
+     * Undocumented function
      *
-     * @param [type] $value
+     * @param [type] $output
+     * @return void
+     */
+    private function escapeOutput($output)
+    {
+        return htmlspecialchars($output, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    }
+    /**
+     * Controller to validate video url submission on TricksVideoType
+     *
+     * @param string $value
      * @param Constraint $constraint
      * @return void
      */
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof VideoUrls) {
-            throw new UnexpectedTypeException($constraint, VideoUrls::class);
+            $escapedConstraint = $this->escapeOutput($constraint);
+            throw new UnexpectedTypeException($escapedConstraint, VideoUrls::class);
         }
 
         if (null === $value || '' === $value) {
