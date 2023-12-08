@@ -44,9 +44,9 @@ class MailSender extends AbstractController
             $mail->Body = $body;
 
             $mail->send();
-            echo 'Message has been sent';
+            print_r ('Message has been sent');
         } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            print_r ("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
         }
     }
 }
