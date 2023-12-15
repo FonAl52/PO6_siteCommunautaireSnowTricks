@@ -38,6 +38,8 @@ class DeleteTricksController extends AbstractController
         $entityManager->remove($tricks);
         $entityManager->flush();
 
+        $this->addFlash('alert', 'Le tricks à bien été supprimé.');
+
         return $this->redirectToRoute('home.index');
     }
 }

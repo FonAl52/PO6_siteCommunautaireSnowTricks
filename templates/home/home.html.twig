@@ -27,6 +27,11 @@
                     {{ message }}
                 </div>
             {% endfor %}
+            {% for message in app.flashes('alert') %}
+                <div class="alert alert-danger mt-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
             <!-- Blog preview section-->
             <section id="tricks" class="mx-auto px-5 bg-dark py-5">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 gx-5" id="tricks-container">
