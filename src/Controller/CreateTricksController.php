@@ -80,6 +80,8 @@ class CreateTricksController extends AbstractController
             $manager->persist($tricks);
             $manager->flush();
 
+            $this->addFlash('success', 'Le tricks à bien été crée.');
+
             return $this->redirectToRoute('home.index');
         }
 

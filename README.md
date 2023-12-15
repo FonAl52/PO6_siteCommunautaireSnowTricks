@@ -4,7 +4,7 @@ This repository is Allan Fontaine's sixth project for the Openclassrooms PHP/Sym
 
 ## Prerequisites
 
-- PHP >= 7.4
+- PHP >= 8.1
 - Composer
 - Symfony CLI
 

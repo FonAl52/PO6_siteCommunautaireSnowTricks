@@ -84,7 +84,7 @@ class SecurityController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Votre compte a bien été créé.'
+                'Votre compte a bien été créé, pensez a l\'activer'
             );
 
             $manager->persist($user);
